@@ -14,6 +14,7 @@ export class ShippingService {
       countries: [
         {
           country: 'egypt',
+          currency: 'EGP',
           governorates: [
             { governorate: 'Cairo', price: 50 },
             { governorate: 'Alexandria', price: 60 },
@@ -24,6 +25,7 @@ export class ShippingService {
         },
         {
           country: 'saudi',
+          currency: 'SAR',
           governorates: [
             { governorate: 'Riyadh', price: 40 },
             { governorate: 'Jeddah', price: 45 },
@@ -34,6 +36,7 @@ export class ShippingService {
         },
         {
           country: 'oman',
+          currency: 'OMR',
           governorates: [
             { governorate: 'Muscat', price: 35 },
             { governorate: 'Seeb', price: 40 },
@@ -52,6 +55,7 @@ export class ShippingService {
       countries: [
         {
           country: 'egypt',
+          currency: 'EGP',
           governorates: [
             { governorate: 'Cairo', price: 80 },
             { governorate: 'Alexandria', price: 90 },
@@ -62,6 +66,7 @@ export class ShippingService {
         },
         {
           country: 'saudi',
+          currency: 'SAR',
           governorates: [
             { governorate: 'Riyadh', price: 70 },
             { governorate: 'Jeddah', price: 75 },
@@ -72,6 +77,7 @@ export class ShippingService {
         },
         {
           country: 'oman',
+          currency: 'OMR',
           governorates: [
             { governorate: 'Muscat', price: 65 },
             { governorate: 'Seeb', price: 70 },

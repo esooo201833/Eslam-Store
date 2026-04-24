@@ -8,6 +8,7 @@ export interface ShippingCompany {
 
 export interface CountryShipping {
   country: string;
+  currency: string;
   governorates: GovernorateShipping[];
 }
 

@@ -440,12 +440,12 @@ interface SiteSettings {
                     <div class="space-y-3">
                       @for (country of company.countries; track country.country) {
                         <div class="bg-gray-50 rounded-lg p-4">
-                          <h4 class="font-semibold mb-2">{{ translateCountry(country.country) }}</h4>
+                          <h4 class="font-semibold mb-2">{{ translateCountry(country.country) }} ({{ country.currency }})</h4>
                           <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                             @for (governorate of country.governorates; track governorate.governorate) {
                               <div class="flex justify-between items-center bg-white rounded-lg p-2 border border-gray-200">
                                 <span class="text-sm">{{ governorate.governorate }}</span>
-                                <span class="font-bold text-sm">$ {{ governorate.price }}</span>
+                                <span class="font-bold text-sm">{{ governorate.price }} {{ country.currency }}</span>
                               </div>
                             }
                           </div>
@@ -844,6 +844,170 @@ interface SiteSettings {
           </div>
         </div>
       }
+
+      <!-- Shipping Modal -->
+      @if (isShippingModalOpen) {
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+              <h2 class="text-2xl font-bold">
+                {{ isEditShipping ? translate('admin.edit') : translate('admin.add') }} {{ translate('admin.shippingCompany') }}
+              </h2>
+            </div>
+            <div class="p-6 space-y-6">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.shippingCompanyName') }}</label>
+                <input
+                  type="text"
+                  [(ngModel)]="shippingForm.name"
+                  placeholder="{{ translate('admin.shippingCompanyName') }}"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.shippingCompanyLogo') }}</label>
+                <input
+                  type="text"
+                  [(ngModel)]="shippingForm.logo"
+                  placeholder="{{ translate('general.orEnterUrl') }}"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                />
+              </div>
+              
+              <!-- Countries Section -->
+              <div class="space-y-4">
+                <h3 class="text-lg font-bold">{{ translate('admin.countries') }}</h3>
+                
+                <!-- Egypt -->
+                <div class="border border-gray-200 rounded-xl p-4">
+                  <h4 class="font-semibold mb-3">{{ translateCountry('egypt') }}</h4>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">{{ translate('admin.currency') }}</label>
+                      <select
+                        [(ngModel)]="egyptCurrency"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      >
+                        <option value="EGP">EGP - Egyptian Pound</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ translate('admin.governorates') }}</label>
+                    @for (gov of ['Cairo', 'Alexandria', 'Giza', 'Dakahlia', 'Sharqia']; track gov) {
+                      <div class="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          [value]="gov"
+                          disabled
+                          class="flex-1 px-4 py-2 border border-gray-200 rounded-lg bg-gray-50"
+                        />
+                        <input
+                          type="number"
+                          [(ngModel)]="egyptPrices[gov]"
+                          placeholder="Price"
+                          class="w-32 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                        />
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Saudi Arabia -->
+                <div class="border border-gray-200 rounded-xl p-4">
+                  <h4 class="font-semibold mb-3">{{ translateCountry('saudi') }}</h4>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">{{ translate('admin.currency') }}</label>
+                      <select
+                        [(ngModel)]="saudiCurrency"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      >
+                        <option value="SAR">SAR - Saudi Riyal</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ translate('admin.governorates') }}</label>
+                    @for (gov of ['Riyadh', 'Jeddah', 'Dammam', 'Mecca', 'Medina']; track gov) {
+                      <div class="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          [value]="gov"
+                          disabled
+                          class="flex-1 px-4 py-2 border border-gray-200 rounded-lg bg-gray-50"
+                        />
+                        <input
+                          type="number"
+                          [(ngModel)]="saudiPrices[gov]"
+                          placeholder="Price"
+                          class="w-32 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                        />
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Oman -->
+                <div class="border border-gray-200 rounded-xl p-4">
+                  <h4 class="font-semibold mb-3">{{ translateCountry('oman') }}</h4>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">{{ translate('admin.currency') }}</label>
+                      <select
+                        [(ngModel)]="omanCurrency"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      >
+                        <option value="OMR">OMR - Omani Rial</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ translate('admin.governorates') }}</label>
+                    @for (gov of ['Muscat', 'Seeb', 'Salalah', 'Sohar', 'Nizwa']; track gov) {
+                      <div class="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          [value]="gov"
+                          disabled
+                          class="flex-1 px-4 py-2 border border-gray-200 rounded-lg bg-gray-50"
+                        />
+                        <input
+                          type="number"
+                          [(ngModel)]="omanPrices[gov]"
+                          placeholder="Price"
+                          class="w-32 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                        />
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-3 p-6 border-t border-gray-200">
+              <button
+                (click)="closeShippingModal()"
+                class="flex-1 px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition-colors font-medium"
+              >
+                {{ translate('admin.cancel') }}
+              </button>
+              <button
+                (click)="saveShipping()"
+                class="flex-1 px-6 py-3 rounded-xl bg-black text-white hover:bg-gray-800 transition-colors font-medium"
+              >
+                {{ isEditShipping ? translate('admin.update') : translate('admin.add') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   `
 })
@@ -899,6 +1063,14 @@ export class AdminComponent implements OnInit {
     logo: '',
     countries: [] as any[]
   };
+  
+  // Temporary storage for form data
+  egyptCurrency = 'EGP';
+  saudiCurrency = 'SAR';
+  omanCurrency = 'OMR';
+  egyptPrices: { [key: string]: number } = {};
+  saudiPrices: { [key: string]: number } = {};
+  omanPrices: { [key: string]: number } = {};
 
   // Site management
   siteSettings: SiteSettings = {
@@ -1165,6 +1337,15 @@ export class AdminComponent implements OnInit {
       logo: '',
       countries: []
     };
+    
+    // Reset temporary variables
+    this.egyptCurrency = 'EGP';
+    this.saudiCurrency = 'SAR';
+    this.omanCurrency = 'OMR';
+    this.egyptPrices = {};
+    this.saudiPrices = {};
+    this.omanPrices = {};
+    
     this.isShippingModalOpen = true;
   }
 
@@ -1178,9 +1359,94 @@ export class AdminComponent implements OnInit {
     this.shippingForm = {
       name: company.name,
       logo: company.logo || '',
-      countries: company.countries
+      countries: JSON.parse(JSON.stringify(company.countries))
     };
+    
+    // Populate temporary variables
+    if (company.countries[0]) {
+      this.egyptCurrency = company.countries[0].currency;
+      this.egyptPrices = {};
+      company.countries[0].governorates.forEach(g => {
+        this.egyptPrices[g.governorate] = g.price;
+      });
+    }
+    
+    if (company.countries[1]) {
+      this.saudiCurrency = company.countries[1].currency;
+      this.saudiPrices = {};
+      company.countries[1].governorates.forEach(g => {
+        this.saudiPrices[g.governorate] = g.price;
+      });
+    }
+    
+    if (company.countries[2]) {
+      this.omanCurrency = company.countries[2].currency;
+      this.omanPrices = {};
+      company.countries[2].governorates.forEach(g => {
+        this.omanPrices[g.governorate] = g.price;
+      });
+    }
+    
     this.isShippingModalOpen = true;
+  }
+
+  saveShipping(): void {
+    if (!this.shippingForm.name) {
+      alert('Please enter company name');
+      return;
+    }
+
+    // Build countries array from temporary variables
+    const egyptGovernorates = ['Cairo', 'Alexandria', 'Giza', 'Dakahlia', 'Sharqia'].map(gov => ({
+      governorate: gov,
+      price: this.egyptPrices[gov] || 0
+    }));
+    
+    const saudiGovernorates = ['Riyadh', 'Jeddah', 'Dammam', 'Mecca', 'Medina'].map(gov => ({
+      governorate: gov,
+      price: this.saudiPrices[gov] || 0
+    }));
+    
+    const omanGovernorates = ['Muscat', 'Seeb', 'Salalah', 'Sohar', 'Nizwa'].map(gov => ({
+      governorate: gov,
+      price: this.omanPrices[gov] || 0
+    }));
+
+    const companyData: ShippingCompany = {
+      id: this.isEditShipping ? this.editingShippingId! : Date.now().toString(),
+      name: this.shippingForm.name,
+      logo: this.shippingForm.logo,
+      countries: [
+        {
+          country: 'egypt',
+          currency: this.egyptCurrency,
+          governorates: egyptGovernorates
+        },
+        {
+          country: 'saudi',
+          currency: this.saudiCurrency,
+          governorates: saudiGovernorates
+        },
+        {
+          country: 'oman',
+          currency: this.omanCurrency,
+          governorates: omanGovernorates
+        }
+      ],
+      createdAt: new Date()
+    };
+
+    if (this.isEditShipping) {
+      this.shippingService.updateShippingCompany(companyData.id, companyData).subscribe(() => {
+        this.loadShippingCompanies();
+        this.closeShippingModal();
+      });
+    } else {
+      this.shippingService.addShippingCompany(companyData).subscribe(() => {
+        this.loadShippingCompanies();
+        this.closeShippingModal();
+      });
+    }
   }
 
   deleteShipping(id: string): void {
