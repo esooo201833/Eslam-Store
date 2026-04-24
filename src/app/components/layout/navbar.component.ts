@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, NgOptimizedImage],
+  imports: [CommonModule, FormsModule, RouterModule],
   template: `
     <!-- Header -->
     <header class="bg-white shadow-lg sticky top-0 z-50 border-b border-gray-100">
@@ -16,13 +15,6 @@ import { NgOptimizedImage } from '@angular/common';
           <div class="flex items-center justify-between h-16">
             <!-- Logo -->
             <div class="flex items-center gap-2">
-              <img
-                ngSrc="/logo.png"
-                width="48"
-                height="48"
-                alt="Eslam Store Logo"
-                class="w-12 h-12 object-contain"
-              />
               <h1 class="text-xl font-bold text-gradient">Eslam Store</h1>
             </div>
 
