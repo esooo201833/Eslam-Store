@@ -178,23 +178,23 @@ interface SiteSettings {
         @if (activeTab === 'employees') {
           <div class="bg-white rounded-2xl shadow-lg p-6">
             <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold">Employees Management</h2>
+              <h2 class="text-xl font-bold">{{ translate('admin.employeesTitle') }}</h2>
               <button
                 (click)="openEmployeeModal()"
                 class="px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg"
               >
-                + Add Employee
+                + {{ translate('admin.addEmployee') }}
               </button>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full">
                 <thead>
                   <tr class="border-b border-gray-200">
-                    <th class="text-left py-3 px-4">Name</th>
-                    <th class="text-left py-3 px-4">Email</th>
-                    <th class="text-left py-3 px-4">Role</th>
-                    <th class="text-left py-3 px-4">Permissions</th>
-                    <th class="text-left py-3 px-4">Actions</th>
+                    <th class="text-left py-3 px-4">{{ translate('admin.name') }}</th>
+                    <th class="text-left py-3 px-4">{{ translate('admin.email') }}</th>
+                    <th class="text-left py-3 px-4">{{ translate('admin.role') }}</th>
+                    <th class="text-left py-3 px-4">{{ translate('admin.permissions') }}</th>
+                    <th class="text-left py-3 px-4">{{ translate('admin.actions') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -216,13 +216,13 @@ interface SiteSettings {
                             (click)="editEmployee(employee)"
                             class="px-3 py-1 text-blue-600 hover:text-blue-800 transition-colors font-medium"
                           >
-                            Edit
+                            {{ translate('admin.edit') }}
                           </button>
                           <button
                             (click)="deleteEmployee(employee.id)"
                             class="px-3 py-1 text-red-600 hover:text-red-800 transition-colors font-medium"
                           >
-                            Delete
+                            {{ translate('admin.delete') }}
                           </button>
                         </div>
                       </td>
@@ -388,12 +388,12 @@ interface SiteSettings {
             <!-- Categories Section -->
             <div class="bg-white rounded-2xl shadow-lg p-6">
               <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold">Categories</h2>
+                <h2 class="text-xl font-bold">{{ translate('admin.categoriesTitle') }}</h2>
                 <button
                   (click)="openCategoryModal()"
                   class="px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg"
                 >
-                  + Add Category
+                  + {{ translate('admin.addCategory') }}
                 </button>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -416,24 +416,24 @@ interface SiteSettings {
             <!-- Products Section -->
             <div class="bg-white rounded-2xl shadow-lg p-6">
               <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold">Products</h2>
+                <h2 class="text-xl font-bold">{{ translate('admin.productsTitle') }}</h2>
                 <button
                   (click)="openAddModal()"
                   class="px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg"
                 >
-                  + Add Product
+                  + {{ translate('admin.addProduct') }}
                 </button>
               </div>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
                     <tr class="border-b border-gray-200">
-                      <th class="text-left py-3 px-4">Image</th>
-                      <th class="text-left py-3 px-4">Name</th>
-                      <th class="text-left py-3 px-4">Category</th>
-                      <th class="text-left py-3 px-4">Price</th>
-                      <th class="text-left py-3 px-4">Stock</th>
-                      <th class="text-left py-3 px-4">Actions</th>
+                      <th class="text-left py-3 px-4">{{ translate('admin.image') }}</th>
+                      <th class="text-left py-3 px-4">{{ translate('admin.productName') }}</th>
+                      <th class="text-left py-3 px-4">{{ translate('admin.category') }}</th>
+                      <th class="text-left py-3 px-4">{{ translate('admin.price') }}</th>
+                      <th class="text-left py-3 px-4">{{ translate('admin.stock') }}</th>
+                      <th class="text-left py-3 px-4">{{ translate('admin.actions') }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -444,7 +444,7 @@ interface SiteSettings {
                         </td>
                         <td class="py-3 px-4 font-medium">{{ product.name }}</td>
                         <td class="py-3 px-4 text-gray-600">{{ product.category }}</td>
-                        <td class="py-3 px-4">\${{ product.price.toFixed(2) }}</td>
+                        <td class="py-3 px-4">$ {{ product.price.toFixed(2) }}</td>
                         <td class="py-3 px-4">{{ product.stock }}</td>
                         <td class="py-3 px-4">
                           <div class="flex gap-2">
@@ -452,13 +452,13 @@ interface SiteSettings {
                               (click)="openEditModal(product)"
                               class="px-3 py-1 text-blue-600 hover:text-blue-800 transition-colors font-medium"
                             >
-                              Edit
+                              {{ translate('admin.edit') }}
                             </button>
                             <button
                               (click)="deleteProduct(product.id)"
                               class="px-3 py-1 text-red-600 hover:text-red-800 transition-colors font-medium"
                             >
-                              Delete
+                              {{ translate('admin.delete') }}
                             </button>
                           </div>
                         </td>
@@ -501,22 +501,22 @@ interface SiteSettings {
       @if (isModalOpen) {
         <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <h2 class="text-2xl font-bold mb-6">{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h2>
+            <h2 class="text-2xl font-bold mb-6">{{ isEditMode ? translate('admin.edit') + ' ' + translate('admin.productsTitle') : translate('admin.addProduct') }}</h2>
             <div class="space-y-5">
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-2">Product Name</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.productName') }}</label>
                 <input
                   type="text"
                   id="product-name"
                   name="product-name"
                   [(ngModel)]="productForm.name"
-                  placeholder="Product Name"
+                  placeholder="{{ translate('admin.productName') }}"
                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
               
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-2">Price</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.price') }}</label>
                 <input
                   [(ngModel)]="productForm.price"
                   type="number"
@@ -528,19 +528,19 @@ interface SiteSettings {
               </div>
               
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-2">Description</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.description') }}</label>
                 <textarea
                   [(ngModel)]="productForm.description"
                   id="product-description"
                   name="product-description"
-                  placeholder="Product description"
+                  placeholder="{{ translate('admin.description') }}"
                   rows="4"
                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none"
                 ></textarea>
               </div>
               
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-2">Image</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.image') }}</label>
                 <div class="space-y-3">
                   <input
                     type="file"
@@ -553,7 +553,7 @@ interface SiteSettings {
                     id="product-image"
                     name="product-image"
                     [(ngModel)]="productForm.image"
-                    placeholder="Or enter image URL"
+                    placeholder="{{ translate('general.orEnterUrl') }}"
                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                   />
                   @if (productForm.image) {
@@ -563,14 +563,14 @@ interface SiteSettings {
               </div>
               
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-2">Category</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.category') }}</label>
                 <select
                   id="product-category"
                   name="product-category"
                   [(ngModel)]="productForm.category"
                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
                 >
-                  <option value="">Select category</option>
+                  <option value="">{{ translate('general.selectCategory') }}</option>
                   @for (category of categories; track category) {
                     <option [value]="category">{{ category }}</option>
                   }
@@ -578,7 +578,7 @@ interface SiteSettings {
               </div>
               
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-2">Stock</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.stock') }}</label>
                 <input
                   [(ngModel)]="productForm.stock"
                   type="number"
@@ -595,13 +595,13 @@ interface SiteSettings {
                 (click)="closeModal()"
                 class="flex-1 px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 transition-colors font-medium"
               >
-                Cancel
+                {{ translate('admin.cancel') }}
               </button>
               <button
                 (click)="saveProduct()"
                 class="flex-1 px-6 py-3 rounded-xl bg-black text-white hover:bg-gray-800 transition-colors font-medium"
               >
-                {{ isEditMode ? 'Update' : 'Add' }}
+                {{ isEditMode ? translate('admin.update') : translate('admin.add') }}
               </button>
             </div>
           </div>
@@ -612,40 +612,40 @@ interface SiteSettings {
       @if (isEmployeeModalOpen) {
         <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4">
-            <h2 class="text-2xl font-bold mb-6">{{ isEditEmployee ? 'Edit Employee' : 'Add Employee' }}</h2>
+            <h2 class="text-2xl font-bold mb-6">{{ isEditEmployee ? translate('admin.edit') + ' ' + translate('admin.employeesTitle') : translate('admin.addEmployee') }}</h2>
             <div class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.name') }}</label>
                 <input
                   type="text"
                   [(ngModel)]="employeeForm.name"
-                  placeholder="Employee Name"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  placeholder="{{ translate('admin.name') }}"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.email') }}</label>
                 <input
                   type="email"
                   [(ngModel)]="employeeForm.email"
                   placeholder="employee@example.com"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.password') }}</label>
                 <input
                   type="password"
                   [(ngModel)]="employeeForm.password"
-                  placeholder="Password"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  placeholder="••••••••"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.role') }}</label>
                 <select
                   [(ngModel)]="employeeForm.role"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
                 >
                   <option value="manager">Manager</option>
                   <option value="editor">Editor</option>
@@ -653,23 +653,23 @@ interface SiteSettings {
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Permissions</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.permissions') }}</label>
                 <div class="space-y-2">
                   <label class="flex items-center gap-2">
                     <input type="checkbox" [(ngModel)]="employeeForm.permissions.products" class="w-4 h-4" />
-                    <span>Manage Products</span>
+                    <span>{{ translate('admin.manageProducts') }}</span>
                   </label>
                   <label class="flex items-center gap-2">
                     <input type="checkbox" [(ngModel)]="employeeForm.permissions.categories" class="w-4 h-4" />
-                    <span>Manage Categories</span>
+                    <span>{{ translate('admin.manageCategories') }}</span>
                   </label>
                   <label class="flex items-center gap-2">
                     <input type="checkbox" [(ngModel)]="employeeForm.permissions.orders" class="w-4 h-4" />
-                    <span>Manage Orders</span>
+                    <span>{{ translate('admin.manageOrders') }}</span>
                   </label>
                   <label class="flex items-center gap-2">
                     <input type="checkbox" [(ngModel)]="employeeForm.permissions.site" class="w-4 h-4" />
-                    <span>Manage Site Settings</span>
+                    <span>{{ translate('admin.manageSite') }}</span>
                   </label>
                 </div>
               </div>
@@ -678,15 +678,15 @@ interface SiteSettings {
             <div class="flex gap-3 mt-6">
               <button
                 (click)="closeEmployeeModal()"
-                class="flex-1 px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition-colors font-medium"
+                class="flex-1 px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 transition-colors font-medium"
               >
-                Cancel
+                {{ translate('admin.cancel') }}
               </button>
               <button
                 (click)="saveEmployee()"
                 class="flex-1 px-6 py-3 rounded-xl bg-black text-white hover:bg-gray-800 transition-colors font-medium"
               >
-                {{ isEditEmployee ? 'Update' : 'Add' }}
+                {{ isEditEmployee ? translate('admin.update') : translate('admin.add') }}
               </button>
             </div>
           </div>
