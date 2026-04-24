@@ -20,7 +20,7 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:4200',
   'https://eslam-store.vercel.app',
-  'https://shaky-birds-hide.loca.lt',
+  'https://flat-teams-report.loca.lt',
   // Add your Fly.io URL here: 'https://eslam-store-backend.fly.dev'
 ];
 
@@ -29,11 +29,8 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+    // Allow all origins for localtunnel testing
+    callback(null, true);
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
