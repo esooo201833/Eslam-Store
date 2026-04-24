@@ -10,6 +10,7 @@ import { Cart } from '../../models/cart.model';
 import { LanguageService } from '../../services/language.service';
 import { ProductService } from '../../services/product.service';
 import { PayPalService } from '../../services/paypal.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-checkout',
@@ -370,6 +371,8 @@ export class CheckoutComponent implements OnInit, AfterContentChecked {
   // Address fields
   selectedCountry = '';
   selectedGovernorate = '';
+  address = '';
+  phone = '';
   area = '';
   streetName = '';
   buildingNumber = '';
@@ -397,7 +400,8 @@ export class CheckoutComponent implements OnInit, AfterContentChecked {
     private router: Router,
     private languageService: LanguageService,
     private productService: ProductService,
-    private paypalService: PayPalService
+    private paypalService: PayPalService,
+    private apiService: ApiService
   ) {
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
@@ -447,7 +451,7 @@ export class CheckoutComponent implements OnInit, AfterContentChecked {
   }
 
   async processPayment(): Promise<void> {
-    if (!this.customerName || !this.customerEmail || !this.paymentMethod) {
+    if (!this.customerName || !this.customerEmail || !this.selectedCountry || !this.selectedGovernorate || !this.address) {
       this.toastService.error('Please fill in all required fields');
       return;
     }
@@ -455,33 +459,44 @@ export class CheckoutComponent implements OnInit, AfterContentChecked {
     this.processing = true;
 
     try {
-      if (this.paymentMethod === 'cash_on_delivery') {
-        // For cash on delivery, create order directly without payment processing
-        const orderId = 'COD_' + Date.now();
-        this.toastService.success('Order placed successfully! You will pay on delivery.');
-        this.cartService.clearCart();
-        this.router.navigate(['/success'], { queryParams: { orderId, method: 'cash_on_delivery' } });
-      } else if (this.paymentMethod === 'paypal') {
-        const result = await this.paymentService.processPayPalPayment(this.cart.total * 1.1);
-        if (result.success) {
-          this.toastService.success('Payment successful!');
-          this.cartService.clearCart();
-          this.router.navigate(['/success'], { queryParams: { orderId: result.orderId } });
-        } else {
-          this.toastService.error(result.error || 'Payment failed');
+      let paymentId = '';
+
+      if (this.paymentMethod === 'stripe') {
+        // Create payment intent
+        const paymentResponse = await this.apiService.createPaymentIntent(this.cart.total).toPromise();
+        if (paymentResponse?.clientSecret) {
+          const confirmResponse = await this.apiService.confirmPayment(paymentResponse.paymentIntentId).toPromise();
+          if (confirmResponse?.success) {
+            paymentId = confirmResponse.payment_id;
+          } else {
+            this.toastService.error('Payment failed');
+            this.processing = false;
+            return;
+          }
         }
-      } else if (this.paymentMethod === 'stripe') {
-        const { clientSecret } = await this.paymentService.createPaymentIntent(this.cart.total * 1.1);
-        const result = await this.paymentService.confirmPayment(clientSecret, null);
-        if (result.success) {
-          this.toastService.success('Payment successful!');
-          this.cartService.clearCart();
-          this.router.navigate(['/success'], { queryParams: { orderId: 'STRIPE_' + Date.now() } });
-        } else {
-          this.toastService.error(result.error || 'Payment failed');
-        }
+      } else {
+        // For cash on delivery or other methods
+        paymentId = 'COD_' + Date.now();
       }
+
+      // Create order
+      const orderData = {
+        full_name: this.customerName,
+        email: this.customerEmail,
+        country: this.selectedCountry,
+        governorate: this.selectedGovernorate,
+        address: this.address,
+        phone: this.phone,
+        payment_id: paymentId
+      };
+
+      const orderResponse = await this.apiService.createOrder(orderData).toPromise();
+      
+      this.toastService.success('Order placed successfully!');
+      this.cartService.clearCart();
+      this.router.navigate(['/success'], { queryParams: { orderId: orderResponse.order_id } });
     } catch (error) {
+      console.error('Payment error:', error);
       this.toastService.error('An error occurred during payment');
     } finally {
       this.processing = false;

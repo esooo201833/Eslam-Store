@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../../components/layout/navbar.component';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { LanguageService } from '../../services/language.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-login',
@@ -110,7 +111,8 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private apiService: ApiService
   ) {
     this.currentLang = this.languageService.getLanguage();
   }
@@ -119,23 +121,19 @@ export class LoginComponent {
     this.loading = true;
     this.errorMessage = '';
 
-    // Simulate login (replace with actual API call)
-    setTimeout(() => {
-      // For demo purposes, accept any email/password
-      if (this.email && this.password) {
-        localStorage.setItem('user', JSON.stringify({
-          email: this.email,
-          name: this.email.split('@')[0]
-        }));
+    this.apiService.login({ email: this.email, password: this.password }).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
         localStorage.setItem('isLoggedIn', 'true');
-        
         this.loading = false;
         this.router.navigate(['/products']);
-      } else {
-        this.errorMessage = this.translate('login.invalidCredentials');
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || this.translate('login.invalidCredentials');
         this.loading = false;
       }
-    }, 1000);
+    });
   }
 
   translate(key: string): string {

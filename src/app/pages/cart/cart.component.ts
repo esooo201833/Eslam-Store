@@ -6,6 +6,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
 import { Cart, CartItem } from '../../models/cart.model';
 import { LanguageService } from '../../services/language.service';
 import { ProductService } from '../../services/product.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-cart',
@@ -184,7 +185,8 @@ export class CartComponent implements OnInit {
     private cartService: CartService,
     private router: Router,
     private languageService: LanguageService,
-    private productService: ProductService
+    private productService: ProductService,
+    private apiService: ApiService
   ) {
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
@@ -193,9 +195,26 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cartService.getCart().subscribe(cart => {
-      this.cart = cart;
-    });
+    // Try to load from backend first
+    if (localStorage.getItem('token')) {
+      this.apiService.getCart().subscribe({
+        next: (response) => {
+          this.cart = response;
+        },
+        error: (error) => {
+          console.error('Error loading cart from backend:', error);
+          // Fallback to local cart service
+          this.cartService.getCart().subscribe(cart => {
+            this.cart = cart;
+          });
+        }
+      });
+    } else {
+      // Use local cart service if not logged in
+      this.cartService.getCart().subscribe(cart => {
+        this.cart = cart;
+      });
+    }
   }
 
   updateQuantity(productId: string, quantity: number): void {

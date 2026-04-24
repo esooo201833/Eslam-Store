@@ -1,0 +1,30 @@
+{
+  "name": "eslam-store-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Eslam Store E-commerce",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "migrate": "node src/database/migrate.js"
+  },
+  "keywords": ["ecommerce", "api", "express", "postgresql"],
+  "author": "Eslam Salah",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express-validator": "^7.0.1",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "multer": "^1.4.5-lts.1",
+    "stripe": "^14.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

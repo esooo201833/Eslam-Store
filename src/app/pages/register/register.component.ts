@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../../components/layout/navbar.component';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { LanguageService } from '../../services/language.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-register',
@@ -143,7 +144,8 @@ export class RegisterComponent {
 
   constructor(
     private router: Router,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private apiService: ApiService
   ) {
     this.currentLang = this.languageService.getLanguage();
   }
@@ -159,22 +161,23 @@ export class RegisterComponent {
       return;
     }
 
-    // Simulate registration (replace with actual API call)
-    setTimeout(() => {
-      if (this.name && this.email && this.password && this.agreeTerms) {
-        localStorage.setItem('user', JSON.stringify({
-          email: this.email,
-          name: this.name
-        }));
+    this.apiService.register({ 
+      email: this.email, 
+      password: this.password, 
+      full_name: this.name 
+    }).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
         localStorage.setItem('isLoggedIn', 'true');
-        
         this.loading = false;
         this.router.navigate(['/products']);
-      } else {
-        this.errorMessage = this.translate('register.fillAllFields');
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || this.translate('register.fillAllFields');
         this.loading = false;
       }
-    }, 1000);
+    });
   }
 
   translate(key: string): string {

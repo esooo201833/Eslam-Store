@@ -7,6 +7,7 @@ import { Product } from '../../models/product.model';
 import { NavbarComponent } from '../../components/layout/navbar.component';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { LanguageService } from '../../services/language.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-products',
@@ -215,7 +216,8 @@ export class ProductsComponent implements OnInit {
     private productService: ProductService,
     private cartService: CartService,
     private router: Router,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private apiService: ApiService
   ) {
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
@@ -260,11 +262,32 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.getProducts().subscribe(products => {
-      this.products = products;
-      this.filteredProducts = products;
-      this.loading = false;
-    });
+    // Try to load from backend first
+    if (localStorage.getItem('token')) {
+      this.apiService.getProducts().subscribe({
+        next: (response) => {
+          this.products = response.products;
+          this.filteredProducts = response.products;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error loading products from backend:', error);
+          // Fallback to local product service
+          this.productService.getProducts().subscribe(products => {
+            this.products = products;
+            this.filteredProducts = products;
+            this.loading = false;
+          });
+        }
+      });
+    } else {
+      // Use local product service if not logged in
+      this.productService.getProducts().subscribe(products => {
+        this.products = products;
+        this.filteredProducts = products;
+        this.loading = false;
+      });
+    }
   }
 
   loadCategories(): void {

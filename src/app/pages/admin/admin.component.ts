@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product.service';
+import { ApiService } from '../../services/api.service';
 import { Product } from '../../models/product.model';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { NavbarComponent } from '../../components/layout/navbar.component';
@@ -1057,6 +1058,9 @@ export class AdminComponent implements OnInit {
   isCategoryModalOpen = false;
   newCategory = '';
 
+  // Product management (for backend integration)
+  selectedProductImage: File | undefined = undefined;
+
   // Permissions
   isSuperAdmin = false;
   hasShippingPermission = false;
@@ -1065,10 +1069,18 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private apiService: ApiService,
     private router: Router,
     private languageService: LanguageService,
     private shippingService: ShippingService
   ) {
+    this.checkAdminAccess();
+    this.loadProducts();
+    this.loadShippingCompanies();
+    this.loadOrders();
+    this.loadEmployees();
+    this.loadCategories();
+    this.loadSiteSettings();
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
       this.currentLang = lang;
@@ -1121,8 +1133,17 @@ export class AdminComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.getProducts().subscribe(products => {
-      this.products = products;
+    this.apiService.getProducts().subscribe({
+      next: (response) => {
+        this.products = response.products;
+      },
+      error: (error) => {
+        console.error('Error loading products:', error);
+        // Fallback to productService if backend fails
+        this.productService.getProducts().subscribe(products => {
+          this.products = products;
+        });
+      }
     });
   }
 
@@ -1133,10 +1154,19 @@ export class AdminComponent implements OnInit {
   }
 
   loadOrders(): void {
-    const savedOrders = localStorage.getItem('orders');
-    if (savedOrders) {
-      this.orders = JSON.parse(savedOrders);
-    }
+    this.apiService.getAllOrders().subscribe({
+      next: (response) => {
+        this.orders = response.orders;
+      },
+      error: (error) => {
+        console.error('Error loading orders:', error);
+        // Fallback to localStorage if backend fails
+        const savedOrders = localStorage.getItem('orders');
+        if (savedOrders) {
+          this.orders = JSON.parse(savedOrders);
+        }
+      }
+    });
   }
 
   loadEmployees(): void {
@@ -1180,12 +1210,12 @@ export class AdminComponent implements OnInit {
   onProductFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      const file = input.files[0];
+      this.selectedProductImage = input.files[0];
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.productForm.image = e.target.result;
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.selectedProductImage);
     }
   }
 
