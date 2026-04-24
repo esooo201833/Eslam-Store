@@ -7,6 +7,8 @@ import { Product } from '../../models/product.model';
 import { FooterComponent } from '../../components/layout/footer.component';
 
 interface SiteSettings {
+  siteName: string;
+  siteLogo: string;
   promoText: string;
   promoLink: string;
   promoImage: string;
@@ -226,43 +228,84 @@ interface SiteSettings {
         @if (activeTab === 'site') {
           <div class="space-y-6">
             <div class="bg-white rounded-2xl shadow-lg p-6">
+              <h2 class="text-xl font-bold mb-6">Site Information</h2>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Site Name</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="siteSettings.siteName"
+                    placeholder="Enter site name"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Site Logo</label>
+                  <div class="space-y-3">
+                    <input
+                      type="file"
+                      (change)="onFileSelected($event, 'siteLogo')"
+                      accept="image/*"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+                    />
+                    <input
+                      type="text"
+                      [(ngModel)]="siteSettings.siteLogo"
+                      placeholder="Or enter logo URL"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                    @if (siteSettings.siteLogo) {
+                      <img [src]="siteSettings.siteLogo" class="w-32 h-32 object-contain rounded-xl border-2 border-gray-200" />
+                    }
+                  </div>
+                </div>
+                <button
+                  (click)="saveSiteSettings()"
+                  class="px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6">
               <h2 class="text-xl font-bold mb-6">Promo Banner</h2>
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Banner Text</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Banner Text</label>
                   <input
                     type="text"
                     [(ngModel)]="siteSettings.promoText"
                     placeholder="Enter promo text"
-                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Banner Link</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Banner Link</label>
                   <input
                     type="text"
                     [(ngModel)]="siteSettings.promoLink"
                     placeholder="Enter promo link"
-                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Banner Image</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Banner Image</label>
                   <div class="space-y-3">
                     <input
                       type="file"
                       (change)="onFileSelected($event, 'promoImage')"
                       accept="image/*"
-                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
                     />
                     <input
                       type="text"
                       [(ngModel)]="siteSettings.promoImage"
                       placeholder="Or enter image URL"
-                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                     />
                     @if (siteSettings.promoImage) {
-                      <img [src]="siteSettings.promoImage" class="w-full h-48 object-cover rounded-xl" />
+                      <img [src]="siteSettings.promoImage" class="w-full h-48 object-cover rounded-xl border-2 border-gray-200" />
                     }
                   </div>
                 </div>
@@ -279,42 +322,42 @@ interface SiteSettings {
               <h2 class="text-xl font-bold mb-6">Background Images</h2>
               <div class="space-y-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Home Background Image</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Home Background Image</label>
                   <div class="space-y-3">
                     <input
                       type="file"
                       (change)="onFileSelected($event, 'homeBackground')"
                       accept="image/*"
-                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
                     />
                     <input
                       type="text"
                       [(ngModel)]="siteSettings.homeBackground"
                       placeholder="Or enter image URL"
-                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                     />
                     @if (siteSettings.homeBackground) {
-                      <img [src]="siteSettings.homeBackground" class="w-full h-48 object-cover rounded-xl" />
+                      <img [src]="siteSettings.homeBackground" class="w-full h-48 object-cover rounded-xl border-2 border-gray-200" />
                     }
                   </div>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Category Background Image</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Category Background Image</label>
                   <div class="space-y-3">
                     <input
                       type="file"
                       (change)="onFileSelected($event, 'categoryBackground')"
                       accept="image/*"
-                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
                     />
                     <input
                       type="text"
                       [(ngModel)]="siteSettings.categoryBackground"
                       placeholder="Or enter image URL"
-                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                     />
                     @if (siteSettings.categoryBackground) {
-                      <img [src]="siteSettings.categoryBackground" class="w-full h-48 object-cover rounded-xl" />
+                      <img [src]="siteSettings.categoryBackground" class="w-full h-48 object-cover rounded-xl border-2 border-gray-200" />
                     }
                   </div>
                 </div>
@@ -715,6 +758,8 @@ export class AdminComponent implements OnInit {
 
   // Site management
   siteSettings: SiteSettings = {
+    siteName: 'Eslam Store',
+    siteLogo: '',
     promoText: '',
     promoLink: '',
     promoImage: '',
