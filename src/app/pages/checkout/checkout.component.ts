@@ -7,6 +7,7 @@ import { PaymentService } from '../../services/payment.service';
 import { ToastService } from '../../services/toast.service';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { Cart } from '../../models/cart.model';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-checkout',
@@ -25,9 +26,9 @@ import { Cart } from '../../models/cart.model';
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
               </svg>
-              Back to Cart
+              {{ translate('checkout.backToCart') }}
             </button>
-            <h1 class="text-2xl font-bold">Checkout</h1>
+            <h1 class="text-2xl font-bold">{{ translate('checkout.title') }}</h1>
             <div class="w-24"></div>
           </div>
         </div>
@@ -40,13 +41,13 @@ import { Cart } from '../../models/cart.model';
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
             </svg>
           </div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
-          <p class="text-gray-500 mb-6">Looks like you haven't added any items yet</p>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ translate('cart.empty') }}</h2>
+          <p class="text-gray-500 mb-6">{{ translate('cart.emptyMessage') }}</p>
           <button
             routerLink="/"
             class="px-8 py-4 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg hover:scale-105"
           >
-            Start Shopping
+            {{ translate('cart.startShopping') }}
           </button>
         </div>
       }
@@ -62,11 +63,11 @@ import { Cart } from '../../models/cart.model';
                   <div class="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-700 rounded-2xl flex items-center justify-center shadow-lg">
                     <span class="text-white font-bold text-lg">1</span>
                   </div>
-                  <h2 class="text-2xl font-bold text-gray-900">Customer Information</h2>
+                  <h2 class="text-2xl font-bold text-gray-900">{{ translate('checkout.customerInfo') }}</h2>
                 </div>
                 <div class="space-y-6">
                   <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Full Name</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">{{ translate('checkout.fullName') }}</label>
                     <input
                       type="text"
                       id="full-name"
@@ -77,7 +78,7 @@ import { Cart } from '../../models/cart.model';
                     />
                   </div>
                   <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Email Address</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">{{ translate('checkout.emailAddress') }}</label>
                     <input
                       id="customer-email"
                       name="customer-email"
@@ -90,10 +91,10 @@ import { Cart } from '../../models/cart.model';
 
                   <!-- Address Section -->
                   <div class="pt-6 border-t-2 border-gray-200">
-                    <h3 class="text-lg font-bold text-gray-900 mb-6">Address Information</h3>
+                    <h3 class="text-lg font-bold text-gray-900 mb-6">{{ translate('checkout.addressInfo') }}</h3>
                     <div class="space-y-5">
                       <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Country</label>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">{{ translate('checkout.country') }}</label>
                         <select
                           id="country"
                           name="country"
@@ -101,7 +102,7 @@ import { Cart } from '../../models/cart.model';
                           (change)="onCountryChange()"
                           class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300 bg-white"
                         >
-                          <option value="">Select Country</option>
+                          <option value="">{{ translate('checkout.selectCountry') }}</option>
                           @for (country of countries; track country.value) {
                             <option [value]="country.value">{{ country.name }}</option>
                           }
@@ -110,14 +111,14 @@ import { Cart } from '../../models/cart.model';
 
                       @if (selectedCountry) {
                         <div>
-                          <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Governorate</label>
+                          <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">{{ translate('checkout.governorate') }}</label>
                           <select
                             id="governorate"
                             name="governorate"
                             [(ngModel)]="selectedGovernorate"
                             class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300 bg-white"
                           >
-                            <option value="">Select Governorate</option>
+                            <option value="">{{ translate('checkout.selectGovernorate') }}</option>
                             @for (gov of availableGovernorates; track gov) {
                               <option [value]="gov">{{ gov }}</option>
                             }
@@ -126,7 +127,7 @@ import { Cart } from '../../models/cart.model';
                       }
 
                       <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Area</label>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">{{ translate('checkout.area') }}</label>
                         <input
                           type="text"
                           id="area"
@@ -138,7 +139,7 @@ import { Cart } from '../../models/cart.model';
                       </div>
 
                       <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Street Name</label>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">{{ translate('checkout.streetName') }}</label>
                         <input
                           type="text"
                           id="street-name"
@@ -151,7 +152,7 @@ import { Cart } from '../../models/cart.model';
 
                       <div class="grid grid-cols-2 gap-4">
                         <div>
-                          <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Building Number</label>
+                          <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">{{ translate('checkout.buildingNumber') }}</label>
                           <input
                             type="text"
                             id="building-number"
@@ -162,7 +163,7 @@ import { Cart } from '../../models/cart.model';
                           />
                         </div>
                         <div>
-                          <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Floor</label>
+                          <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">{{ translate('checkout.floor') }}</label>
                           <input
                             type="text"
                             id="floor"
@@ -175,7 +176,7 @@ import { Cart } from '../../models/cart.model';
                       </div>
 
                       <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Apartment Number</label>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">{{ translate('checkout.apartmentNumber') }}</label>
                         <input
                           type="text"
                           id="apartment-number"
@@ -196,7 +197,7 @@ import { Cart } from '../../models/cart.model';
                   <div class="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-700 rounded-2xl flex items-center justify-center shadow-lg">
                     <span class="text-white font-bold text-lg">2</span>
                   </div>
-                  <h2 class="text-2xl font-bold text-gray-900">Payment Method</h2>
+                  <h2 class="text-2xl font-bold text-gray-900">{{ translate('checkout.paymentMethod') }}</h2>
                 </div>
                 <div class="space-y-4">
                   <label class="flex items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer hover:border-gray-900 transition-all duration-300 hover:shadow-lg group">
@@ -209,8 +210,8 @@ import { Cart } from '../../models/cart.model';
                       class="mr-4 w-6 h-6 text-gray-900"
                     />
                     <div class="flex-1">
-                      <span class="font-bold text-lg text-gray-900 group-hover:text-black transition-colors">Cash on Delivery</span>
-                      <p class="text-sm text-gray-500 mt-1">Pay when your order arrives</p>
+                      <span class="font-bold text-lg text-gray-900 group-hover:text-black transition-colors">{{ translate('checkout.cashOnDelivery') }}</span>
+                      <p class="text-sm text-gray-500 mt-1">{{ translate('checkout.cashOnDeliveryDesc') }}</p>
                     </div>
                     <div class="w-14 h-9 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
                       <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,8 +230,8 @@ import { Cart } from '../../models/cart.model';
                       class="mr-4 w-6 h-6 text-gray-900"
                     />
                     <div class="flex-1">
-                      <span class="font-bold text-lg text-gray-900 group-hover:text-black transition-colors">PayPal</span>
-                      <p class="text-sm text-gray-500 mt-1">Pay with your PayPal account</p>
+                      <span class="font-bold text-lg text-gray-900 group-hover:text-black transition-colors">{{ translate('checkout.paypal') }}</span>
+                      <p class="text-sm text-gray-500 mt-1">{{ translate('checkout.paypalDesc') }}</p>
                     </div>
                     <svg class="w-14 h-9" viewBox="0 0 24 24" fill="#003087">
                       <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z"/>
@@ -248,8 +249,8 @@ import { Cart } from '../../models/cart.model';
                       class="mr-4 w-6 h-6 text-gray-900"
                     />
                     <div class="flex-1">
-                      <span class="font-bold text-lg text-gray-900 group-hover:text-black transition-colors">Credit Card</span>
-                      <p class="text-sm text-gray-500 mt-1">Pay with your credit card</p>
+                      <span class="font-bold text-lg text-gray-900 group-hover:text-black transition-colors">{{ translate('checkout.creditCard') }}</span>
+                      <p class="text-sm text-gray-500 mt-1">{{ translate('checkout.creditCardDesc') }}</p>
                     </div>
                     <div class="flex gap-3">
                       <svg class="w-10 h-6" viewBox="0 0 24 24" fill="#1A1F71">
@@ -275,14 +276,14 @@ import { Cart } from '../../models/cart.model';
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                   </svg>
-                  <span>Pay \${{ (cart.total * 1.1).toFixed(2) }}</span>
+                  <span>{{ translate('checkout.pay') }} $ {{ (cart.total * 1.1).toFixed(2) }}</span>
                 }
                 @if (processing) {
                   <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  <span>Processing Payment...</span>
+                  <span>{{ translate('checkout.processing') }}</span>
                 }
               </button>
 
@@ -291,14 +292,14 @@ import { Cart } from '../../models/cart.model';
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                 </svg>
-                <span>Secure payment powered by industry-standard encryption</span>
+                <span>{{ translate('checkout.securePayment') }}</span>
               </div>
             </div>
 
             <!-- Order Summary -->
             <div>
               <div class="bg-white rounded-3xl shadow-xl p-8 sticky top-24 transform transition-all duration-500 hover:shadow-2xl">
-                <h2 class="text-2xl font-bold mb-6 text-gray-900">Order Summary</h2>
+                <h2 class="text-2xl font-bold mb-6 text-gray-900">{{ translate('checkout.orderSummary') }}</h2>
                 <div class="space-y-5 mb-6">
                   @for (item of cart.items; track item.product.id) {
                     <div class="flex gap-4 pb-5 border-b border-gray-100">
@@ -317,22 +318,22 @@ import { Cart } from '../../models/cart.model';
                 </div>
                 <div class="space-y-4 border-t-2 border-gray-200 pt-6">
                   <div class="flex justify-between items-center">
-                    <span class="text-gray-600">Subtotal</span>
-                    <span class="font-semibold text-lg">\${{ cart.total.toFixed(2) }}</span>
+                    <span class="text-gray-600">{{ translate('checkout.subtotal') }}</span>
+                    <span class="font-semibold text-lg">$ {{ cart.total.toFixed(2) }}</span>
                   </div>
                   <div class="flex justify-between items-center">
-                    <span class="text-gray-600">Shipping</span>
-                    <span class="font-semibold text-green-600">Free</span>
+                    <span class="text-gray-600">{{ translate('checkout.shipping') }}</span>
+                    <span class="font-semibold text-green-600">{{ translate('checkout.free') }}</span>
                   </div>
                   <div class="flex justify-between items-center">
-                    <span class="text-gray-600">Tax (10%)</span>
-                    <span class="font-semibold">\${{ (cart.total * 0.1).toFixed(2) }}</span>
+                    <span class="text-gray-600">{{ translate('checkout.tax') }}</span>
+                    <span class="font-semibold">$ {{ (cart.total * 0.1).toFixed(2) }}</span>
                   </div>
                   <div class="border-t-2 border-gray-200 pt-6">
                     <div class="flex justify-between items-center">
-                      <span class="font-bold text-xl text-gray-900">Total</span>
+                      <span class="font-bold text-xl text-gray-900">{{ translate('checkout.total') }}</span>
                       <span class="font-bold text-3xl bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                        \${{ (cart.total * 1.1).toFixed(2) }}
+                        $ {{ (cart.total * 1.1).toFixed(2) }}
                       </span>
                     </div>
                   </div>
@@ -353,6 +354,7 @@ export class CheckoutComponent implements OnInit {
   customerEmail = '';
   paymentMethod: 'paypal' | 'stripe' | 'cash_on_delivery' = 'cash_on_delivery';
   processing = false;
+  currentLang: 'ar' | 'en' = 'ar';
 
   // Address fields
   selectedCountry = '';
@@ -381,8 +383,14 @@ export class CheckoutComponent implements OnInit {
     private cartService: CartService,
     private paymentService: PaymentService,
     private toastService: ToastService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private languageService: LanguageService
+  ) {
+    this.currentLang = this.languageService.getLanguage();
+    this.languageService.currentLanguage$.subscribe(lang => {
+      this.currentLang = lang;
+    });
+  }
 
   ngOnInit(): void {
     this.cartService.getCart().subscribe(cart => {
@@ -435,5 +443,9 @@ export class CheckoutComponent implements OnInit {
     } finally {
       this.processing = false;
     }
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
   }
 }

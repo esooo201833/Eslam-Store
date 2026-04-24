@@ -7,6 +7,7 @@ import { Product } from '../../models/product.model';
 import { PromoModalComponent } from '../../components/ui/promo-modal.component';
 import { NavbarComponent } from '../../components/layout/navbar.component';
 import { FooterComponent } from '../../components/layout/footer.component';
+import { LanguageService } from '../../services/language.service';
 import { interval, take } from 'rxjs';
 
 @Component({
@@ -87,27 +88,27 @@ import { interval, take } from 'rxjs';
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div class="max-w-2xl animate-fade-in-up">
             <span class="inline-block px-4 py-2 badge badge-accent mb-6 shadow-lg">
-              ✨ New Collection 2024
+              ✨ {{ translate('home.newCollection') }}
             </span>
             <h2 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              Discover Luxury
+              {{ translate('home.heroTitle') }}
               <span class="block text-gradient-gold">Shopping</span>
             </h2>
             <p class="text-xl text-gray-200 mb-8 leading-relaxed">
-              Experience the finest collection of premium products curated for the discerning shopper. From cutting-edge electronics to timeless fashion, discover excellence in every detail.
+              {{ translate('home.heroSubtitle') }}
             </p>
             <div class="flex flex-wrap gap-4">
               <button
                 routerLink="/products"
                 class="btn-modern btn-modern-primary px-8 py-4 text-white rounded-xl font-bold"
               >
-                Shop Now
+                {{ translate('home.shopNow') }}
               </button>
               <button
                 routerLink="/deals"
                 class="btn-modern btn-modern-accent px-8 py-4 text-white rounded-xl font-bold"
               >
-                View Deals
+                {{ translate('home.viewDeals') }}
               </button>
             </div>
           </div>
@@ -126,7 +127,7 @@ import { interval, take } from 'rxjs';
                 type="text"
                 id="search-input"
                 name="search"
-                placeholder="Search products..."
+                placeholder="{{ translate('home.searchPlaceholder') }}"
                 (input)="onSearch($event)"
                 class="input-modern pl-12"
               />
@@ -137,7 +138,7 @@ import { interval, take } from 'rxjs';
               (change)="onCategoryChange($event)"
               class="input-modern cursor-pointer"
             >
-              <option value="all">All Categories</option>
+              <option value="all">{{ translate('home.allCategories') }}</option>
               @for (category of categories; track category) {
                 <option [value]="category">
                   {{ category }}
@@ -153,7 +154,7 @@ import { interval, take } from 'rxjs';
             (click)="filterByCategory('all')"
             class="badge badge-primary px-6 py-2 text-sm"
           >
-            All
+            {{ translate('home.all') }}
           </button>
           @for (category of categories; track category) {
             <button
@@ -169,7 +170,7 @@ import { interval, take } from 'rxjs';
         @if (loading) {
           <div class="text-center py-20">
             <div class="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-black"></div>
-            <p class="mt-4 text-gray-600">Loading products...</p>
+            <p class="mt-4 text-gray-600">{{ translate('home.loading') }}</p>
           </div>
         }
 
@@ -220,7 +221,7 @@ import { interval, take } from 'rxjs';
                         (click)="addToCart($event, product)"
                         class="px-8 py-3 bg-white text-gray-900 font-bold rounded-2xl shadow-2xl hover:bg-gray-900 hover:text-white transition-all duration-300 transform hover:scale-105"
                       >
-                        Add to Cart
+                        {{ translate('home.addToCart') }}
                       </button>
                     </div>
                   </div>
@@ -235,9 +236,9 @@ import { interval, take } from 'rxjs';
                     </p>
                     <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                       <div class="flex flex-col">
-                        <span class="text-xs text-gray-400 uppercase tracking-wider">Price</span>
+                        <span class="text-xs text-gray-400 uppercase tracking-wider">{{ translate('home.price') }}</span>
                         <span class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                          \${{ product.price.toFixed(2) }}
+                          $ {{ product.price.toFixed(2) }}
                         </span>
                       </div>
                       <button
@@ -261,12 +262,12 @@ import { interval, take } from 'rxjs';
             <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <p class="text-gray-500 text-lg mb-4">No products found</p>
+            <p class="text-gray-500 text-lg mb-4">{{ translate('home.noProducts') }}</p>
             <button
               (click)="filterByCategory('all')"
               class="px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
             >
-              View All Products
+              {{ translate('home.viewAllProducts') }}
             </button>
           </div>
         }
@@ -302,12 +303,19 @@ export class HomeComponent implements OnInit {
     'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=1920&q=80'
   ];
   wishlist: string[] = [];
+  currentLang: 'ar' | 'en' = 'ar';
 
   constructor(
     private productService: ProductService,
     private cartService: CartService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private languageService: LanguageService
+  ) {
+    this.currentLang = this.languageService.getLanguage();
+    this.languageService.currentLanguage$.subscribe(lang => {
+      this.currentLang = lang;
+    });
+  }
 
   ngOnInit(): void {
     this.loadProducts();
@@ -437,5 +445,9 @@ export class HomeComponent implements OnInit {
     event.stopPropagation();
     this.cartService.addToCart(product);
     this.cartItemCount = this.cartService.getItemCount();
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
   }
 }

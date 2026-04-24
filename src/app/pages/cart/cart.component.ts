@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { Cart, CartItem } from '../../models/cart.model';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-cart',
@@ -22,9 +23,9 @@ import { Cart, CartItem } from '../../models/cart.model';
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
               </svg>
-              Continue Shopping
+              {{ translate('cart.continueShopping') }}
             </button>
-            <h1 class="text-2xl font-bold">Shopping Cart</h1>
+            <h1 class="text-2xl font-bold">{{ translate('cart.title') }}</h1>
             <div class="w-24"></div>
           </div>
         </div>
@@ -38,13 +39,13 @@ import { Cart, CartItem } from '../../models/cart.model';
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
               </svg>
             </div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
-            <p class="text-gray-500 mb-6">Looks like you haven't added any items yet</p>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ translate('cart.empty') }}</h2>
+            <p class="text-gray-500 mb-6">{{ translate('cart.emptyMessage') }}</p>
             <button
               routerLink="/"
               class="px-8 py-4 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg hover:scale-105"
             >
-              Start Shopping
+              {{ translate('cart.startShopping') }}
             </button>
           </div>
         }
@@ -71,15 +72,15 @@ import { Cart, CartItem } from '../../models/cart.model';
                       <p class="text-gray-500 text-sm mb-4 leading-relaxed line-clamp-2">{{ item.product.description }}</p>
                       <div class="flex items-center justify-between mb-4">
                         <div class="flex flex-col">
-                          <span class="text-xs text-gray-400 uppercase tracking-wider">Price</span>
+                          <span class="text-xs text-gray-400 uppercase tracking-wider">{{ translate('home.price') }}</span>
                           <span class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                            \${{ item.product.price.toFixed(2) }}
+                            $ {{ item.product.price.toFixed(2) }}
                           </span>
                         </div>
                         <div class="flex flex-col text-right">
-                          <span class="text-xs text-gray-400 uppercase tracking-wider">Total</span>
+                          <span class="text-xs text-gray-400 uppercase tracking-wider">{{ translate('cart.total') }}</span>
                           <span class="text-2xl font-bold text-gray-900">
-                            \${{ (item.product.price * item.quantity).toFixed(2) }}
+                            $ {{ (item.product.price * item.quantity).toFixed(2) }}
                           </span>
                         </div>
                       </div>
@@ -113,7 +114,7 @@ import { Cart, CartItem } from '../../models/cart.model';
                           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                           </svg>
-                          Remove
+                          {{ translate('cart.remove') }}
                         </button>
                       </div>
                     </div>
@@ -125,44 +126,27 @@ import { Cart, CartItem } from '../../models/cart.model';
             <!-- Order Summary -->
             <div class="lg:col-span-1">
               <div class="bg-white rounded-3xl shadow-xl p-8 sticky top-24 transform transition-all duration-500 hover:shadow-2xl">
-                <h2 class="text-2xl font-bold mb-6 text-gray-900">Order Summary</h2>
+                <h2 class="text-2xl font-bold mb-6 text-gray-900">{{ translate('checkout.orderSummary') }}</h2>
                 <div class="space-y-5 mb-8">
                   <div class="flex justify-between items-center py-2">
-                    <span class="text-gray-600">Subtotal</span>
-                    <span class="font-semibold text-lg">\${{ cart.total.toFixed(2) }}</span>
+                    <span class="text-gray-600">{{ translate('cart.subtotal') }}</span>
+                    <span class="font-semibold text-lg">$ {{ cart.total.toFixed(2) }}</span>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <span class="text-gray-600">Shipping</span>
-                    <span class="font-semibold text-green-600">Free</span>
+                    <span class="text-gray-600">{{ translate('checkout.shipping') }}</span>
+                    <span class="font-semibold text-green-600">{{ translate('checkout.free') }}</span>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <span class="text-gray-600">Tax (10%)</span>
-                    <span class="font-semibold">\${{ (cart.total * 0.1).toFixed(2) }}</span>
+                    <span class="text-gray-600">{{ translate('checkout.tax') }}</span>
+                    <span class="font-semibold">$ {{ (cart.total * 0.1).toFixed(2) }}</span>
                   </div>
                   <div class="border-t-2 border-gray-200 pt-5">
                     <div class="flex justify-between items-center">
-                      <span class="font-bold text-xl text-gray-900">Total</span>
+                      <span class="font-bold text-xl text-gray-900">{{ translate('cart.total') }}</span>
                       <span class="font-bold text-3xl bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                        \${{ (cart.total * 1.1).toFixed(2) }}
+                        $ {{ (cart.total * 1.1).toFixed(2) }}
                       </span>
                     </div>
-                  </div>
-                </div>
-                
-                <!-- Promo Code -->
-                <div class="mb-8">
-                  <label class="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Promo Code</label>
-                  <div class="flex gap-3">
-                    <input
-                      type="text"
-                      id="promo-code"
-                      name="promo-code"
-                      placeholder="Enter code"
-                      class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
-                    />
-                    <button class="px-6 py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-black transition-all duration-300 transform hover:scale-105 shadow-lg">
-                      Apply
-                    </button>
                   </div>
                 </div>
                 
@@ -171,7 +155,7 @@ import { Cart, CartItem } from '../../models/cart.model';
                   routerLink="/checkout"
                   class="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold text-lg hover:bg-black transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
                 >
-                  Proceed to Checkout
+                  {{ translate('cart.checkout') }}
                 </button>
                 
                 <!-- Continue Shopping -->
@@ -179,7 +163,7 @@ import { Cart, CartItem } from '../../models/cart.model';
                   routerLink="/"
                   class="w-full mt-4 py-3 text-gray-600 hover:text-gray-900 font-semibold transition-colors"
                 >
-                  Continue Shopping
+                  {{ translate('cart.continueShopping') }}
                 </button>
               </div>
             </div>
@@ -193,11 +177,18 @@ import { Cart, CartItem } from '../../models/cart.model';
 })
 export class CartComponent implements OnInit {
   cart: Cart = { items: [], total: 0 };
+  currentLang: 'ar' | 'en' = 'ar';
 
   constructor(
     private cartService: CartService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private languageService: LanguageService
+  ) {
+    this.currentLang = this.languageService.getLanguage();
+    this.languageService.currentLanguage$.subscribe(lang => {
+      this.currentLang = lang;
+    });
+  }
 
   ngOnInit(): void {
     this.cartService.getCart().subscribe(cart => {
@@ -211,5 +202,9 @@ export class CartComponent implements OnInit {
 
   removeFromCart(productId: string): void {
     this.cartService.removeFromCart(productId);
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
   }
 }
