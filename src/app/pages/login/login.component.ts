@@ -123,15 +123,23 @@ export class LoginComponent {
 
     this.apiService.login({ email: this.email, password: this.password }).subscribe({
       next: (response) => {
+        this.loading = false;
+        
+        // Check if email verification is required
+        if (response.requiresVerification) {
+          localStorage.setItem('pendingEmail', response.email);
+          this.router.navigate(['/verify-otp'], { queryParams: { email: response.email } });
+          return;
+        }
+        
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
         localStorage.setItem('isLoggedIn', 'true');
-        this.loading = false;
         this.router.navigate(['/products']);
       },
       error: (error) => {
-        this.errorMessage = error.error?.message || this.translate('login.invalidCredentials');
         this.loading = false;
+        this.errorMessage = error.error?.message || this.translate('login.invalidCredentials');
       }
     });
   }

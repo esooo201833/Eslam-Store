@@ -11,6 +11,7 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { AboutComponent } from './pages/about/about.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { VerifyOtpComponent } from './pages/verify-otp/verify-otp.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -26,6 +27,7 @@ export const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'verify-otp', component: VerifyOtpComponent },
   { path: 'admin', component: AdminComponent },
   { path: '**', redirectTo: '' }
 ];

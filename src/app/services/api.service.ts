@@ -31,6 +31,14 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/auth/profile`, { headers: this.getHeaders() });
   }
 
+  verifyOTP(data: { email: string; otp: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/verify-otp`, data);
+  }
+
+  resendOTP(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/resend-otp`, { email });
+  }
+
   // Products
   getProducts(params?: any): Observable<any> {
     return this.http.get(`${this.apiUrl}/products`, { params });

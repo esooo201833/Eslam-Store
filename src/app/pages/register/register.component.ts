@@ -167,11 +167,12 @@ export class RegisterComponent {
       full_name: this.name 
     }).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        localStorage.setItem('isLoggedIn', 'true');
         this.loading = false;
-        this.router.navigate(['/products']);
+        // Store email for OTP verification
+        localStorage.setItem('pendingEmail', this.email);
+        localStorage.setItem('pendingName', this.name);
+        // Navigate to OTP verification page
+        this.router.navigate(['/verify-otp'], { queryParams: { email: this.email } });
       },
       error: (error) => {
         this.errorMessage = error.error?.message || this.translate('register.fillAllFields');
