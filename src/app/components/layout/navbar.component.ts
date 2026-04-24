@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, NgOptimizedImage],
   template: `
     <!-- Header -->
     <header class="glass shadow-lg sticky top-0 z-50 border-b border-gray-100">
@@ -15,11 +16,13 @@ import { CartService } from '../../services/cart.service';
           <div class="flex items-center justify-between h-16">
             <!-- Logo -->
             <div class="flex items-center gap-2">
-              <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                </svg>
-              </div>
+              <img
+                ngSrc="/logo.png"
+                width="40"
+                height="40"
+                alt="Eslam Store Logo"
+                class="w-10 h-10 rounded-xl object-contain shadow-lg"
+              />
               <h1 class="text-xl font-bold text-gradient">Eslam Store</h1>
             </div>
 
