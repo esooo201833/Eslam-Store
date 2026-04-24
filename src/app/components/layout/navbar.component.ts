@@ -108,16 +108,6 @@ import { NgOptimizedImage } from '@angular/common';
                 </span>
               }
             </button>
-
-            <!-- Admin -->
-            @if (showAdmin) {
-              <button
-                routerLink="/admin"
-                class="hidden md:block px-6 py-3 bg-gradient-to-r from-gray-900 to-black text-white rounded-2xl font-bold hover:from-black hover:to-gray-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                Admin
-              </button>
-            }
           </div>
         </div>
       </div>
