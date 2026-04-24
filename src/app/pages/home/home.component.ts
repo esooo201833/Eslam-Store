@@ -17,7 +17,7 @@ import { interval, take } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterModule, PromoModalComponent, NavbarComponent, FooterComponent, CountryModalComponent],
   template: `
-    <div class="min-h-screen flex flex-col bg-white dark:bg-gray-950" style="background-color: var(--color-bg-secondary)">
+    <div class="min-h-screen flex flex-col" style="background-color: var(--color-bg-secondary)">
       <!-- Navbar -->
       <app-navbar [showAdmin]="true"></app-navbar>
 
