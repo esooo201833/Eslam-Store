@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-footer',
@@ -105,7 +106,7 @@ import { FormsModule } from '@angular/forms';
             (click)="showAdminLogin = !showAdminLogin"
             class="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-all"
           >
-            Admin
+            {{ translate('footer.admin') }}
           </button>
         </div>
 
@@ -114,7 +115,7 @@ import { FormsModule } from '@angular/forms';
           <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" (click)="showAdminLogin = false">
             <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md transform transition-all" (click)="$event.stopPropagation()">
               <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-gray-900">Admin Login</h3>
+                <h3 class="text-2xl font-bold text-gray-900">{{ translate('login.title') }}</h3>
                 <button (click)="showAdminLogin = false" class="text-gray-400 hover:text-gray-900 transition-colors">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -123,7 +124,7 @@ import { FormsModule } from '@angular/forms';
               </div>
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('login.email') }}</label>
                   <input
                     type="email"
                     [(ngModel)]="adminEmail"
@@ -132,7 +133,7 @@ import { FormsModule } from '@angular/forms';
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('login.password') }}</label>
                   <input
                     type="password"
                     [(ngModel)]="adminPassword"
@@ -140,15 +141,23 @@ import { FormsModule } from '@angular/forms';
                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
                   />
                 </div>
-                <button
-                  (click)="loginAdmin()"
-                  class="w-full py-3 bg-gradient-to-r from-gray-900 to-black text-white rounded-xl font-bold hover:from-black hover:to-gray-900 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                >
-                  Login
-                </button>
                 @if (loginError) {
-                  <p class="text-red-500 text-sm text-center">{{ loginError }}</p>
+                  <p class="text-red-600 text-sm font-medium">{{ loginError }}</p>
                 }
+                <div class="flex gap-3">
+                  <button
+                    (click)="showAdminLogin = false"
+                    class="flex-1 px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 transition-colors font-medium"
+                  >
+                    {{ translate('admin.cancel') }}
+                  </button>
+                  <button
+                    (click)="loginAdmin()"
+                    class="flex-1 px-6 py-3 rounded-xl bg-black text-white hover:bg-gray-800 transition-colors font-medium"
+                  >
+                    {{ translate('login.button') }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -162,19 +171,29 @@ export class FooterComponent {
   adminEmail = '';
   adminPassword = '';
   loginError = '';
+  currentLang: 'ar' | 'en' = 'ar';
+
+  constructor(private languageService: LanguageService) {
+    this.currentLang = this.languageService.getLanguage();
+    this.languageService.currentLanguage$.subscribe(lang => {
+      this.currentLang = lang;
+    });
+  }
 
   loginAdmin(): void {
     if (this.adminEmail === 'admin@admin.com' && this.adminPassword === 'Moh@01102') {
       this.loginError = '';
       this.showAdminLogin = false;
-      alert('Admin login successful!');
-      // Store admin session
+      alert(this.languageService.translate('login.success'));
       localStorage.setItem('isAdmin', 'true');
       localStorage.setItem('adminEmail', this.adminEmail);
-      // Navigate to admin page
       window.location.href = '/admin';
     } else {
-      this.loginError = 'Invalid email or password';
+      this.loginError = this.languageService.translate('login.invalid');
     }
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
   }
 }
