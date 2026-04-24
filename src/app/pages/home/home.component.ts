@@ -173,20 +173,8 @@ import { interval, take } from 'rxjs';
 
         @if (!loading) {
           <div class="relative min-h-screen">
-            <!-- Background Video -->
-            <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-              <video
-                autoplay
-                loop
-                muted
-                playsinline
-                class="w-full h-full object-cover opacity-10 blur-sm"
-                style="min-height: 100vh;"
-              >
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-warehouse-worker-scanning-a-box-4356-large.mp4" type="video/mp4">
-              </video>
-              <div class="absolute inset-0 bg-white/90"></div>
-            </div>
+            <!-- Background -->
+            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-gray-50 to-gray-100"></div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               @for (product of filteredProducts; track product.id) {
