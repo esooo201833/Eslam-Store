@@ -87,6 +87,106 @@ import { Cart } from '../../models/cart.model';
                       class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300"
                     />
                   </div>
+
+                  <!-- Address Section -->
+                  <div class="pt-6 border-t-2 border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6">Address Information</h3>
+                    <div class="space-y-5">
+                      <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Country</label>
+                        <select
+                          id="country"
+                          name="country"
+                          [(ngModel)]="selectedCountry"
+                          (change)="onCountryChange()"
+                          class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300 bg-white"
+                        >
+                          <option value="">Select Country</option>
+                          @for (country of countries; track country.value) {
+                            <option [value]="country.value">{{ country.name }}</option>
+                          }
+                        </select>
+                      </div>
+
+                      @if (selectedCountry) {
+                        <div>
+                          <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Governorate</label>
+                          <select
+                            id="governorate"
+                            name="governorate"
+                            [(ngModel)]="selectedGovernorate"
+                            class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300 bg-white"
+                          >
+                            <option value="">Select Governorate</option>
+                            @for (gov of availableGovernorates; track gov) {
+                              <option [value]="gov">{{ gov }}</option>
+                            }
+                          </select>
+                        </div>
+                      }
+
+                      <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Area</label>
+                        <input
+                          type="text"
+                          id="area"
+                          name="area"
+                          [(ngModel)]="area"
+                          placeholder="Enter area name"
+                          class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300"
+                        />
+                      </div>
+
+                      <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Street Name</label>
+                        <input
+                          type="text"
+                          id="street-name"
+                          name="street-name"
+                          [(ngModel)]="streetName"
+                          placeholder="Enter street name"
+                          class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300"
+                        />
+                      </div>
+
+                      <div class="grid grid-cols-2 gap-4">
+                        <div>
+                          <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Building Number</label>
+                          <input
+                            type="text"
+                            id="building-number"
+                            name="building-number"
+                            [(ngModel)]="buildingNumber"
+                            placeholder="Building #"
+                            class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300"
+                          />
+                        </div>
+                        <div>
+                          <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Floor</label>
+                          <input
+                            type="text"
+                            id="floor"
+                            name="floor"
+                            [(ngModel)]="floor"
+                            placeholder="Floor #"
+                            class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Apartment Number</label>
+                        <input
+                          type="text"
+                          id="apartment-number"
+                          name="apartment-number"
+                          [(ngModel)]="apartmentNumber"
+                          placeholder="Apartment #"
+                          class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -234,6 +334,29 @@ export class CheckoutComponent implements OnInit {
   paymentMethod: 'paypal' | 'stripe' = 'paypal';
   processing = false;
 
+  // Address fields
+  selectedCountry = '';
+  selectedGovernorate = '';
+  area = '';
+  streetName = '';
+  buildingNumber = '';
+  floor = '';
+  apartmentNumber = '';
+
+  countries = [
+    { name: 'Egypt', value: 'egypt' },
+    { name: 'Saudi Arabia', value: 'saudi' },
+    { name: 'Oman', value: 'oman' }
+  ];
+
+  governorates: { [key: string]: string[] } = {
+    egypt: ['Cairo', 'Alexandria', 'Giza', 'Dakahlia', 'Sharqia', 'Monufia', 'Qalyubia', 'Gharbia', 'Menofia', 'Beheira', 'Ismailia', 'Suez', 'Aswan', 'Assiut', 'Beni Suef', 'Fayoum', 'Luxor', 'Matrouh', 'Minya', 'New Valley', 'North Sinai', 'Port Said', 'Qena', 'Red Sea', 'Sohag', 'South Sinai'],
+    saudi: ['Riyadh', 'Jeddah', 'Mecca', 'Medina', 'Dammam', 'Khobar', 'Tabuk', 'Abha', 'Hail', 'Buraidah', 'Khamis Mushait', 'Taif', 'Najran', 'Jizan', 'Al Hofuf', 'Yanbu', 'Ar Rass', 'Sakaka', 'Al Bahah', 'Jubail'],
+    oman: ['Muscat', 'Seeb', 'Salalah', 'Sohar', 'Nizwa', 'Sur', 'Ibra', 'Bawshar', 'Rustaq', 'Haima', 'Al Khaburah', 'Suwayq', 'Ibri', 'Bahla', 'Madha', 'Adam', 'Dibba', 'Al Buraimi', 'Shinas', 'Liwa']
+  };
+
+  availableGovernorates: string[] = [];
+
   constructor(
     private cartService: CartService,
     private paymentService: PaymentService,
@@ -245,6 +368,11 @@ export class CheckoutComponent implements OnInit {
     this.cartService.getCart().subscribe(cart => {
       this.cart = cart;
     });
+  }
+
+  onCountryChange(): void {
+    this.selectedGovernorate = '';
+    this.availableGovernorates = this.governorates[this.selectedCountry] || [];
   }
 
   async processPayment(): Promise<void> {
