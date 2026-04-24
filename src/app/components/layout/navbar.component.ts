@@ -64,6 +64,13 @@ import { inject } from '@angular/core';
               {{ translate('nav.deals') }}
               <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 transition-all duration-300 group-hover:w-full"></span>
             </a>
+            <a
+              routerLink="/about"
+              class="nav-link text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white font-semibold transition-all relative group py-2"
+            >
+              {{ translate('nav.about') }}
+              <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 transition-all duration-300 group-hover:w-full"></span>
+            </a>
           </nav>
 
           <!-- Actions -->

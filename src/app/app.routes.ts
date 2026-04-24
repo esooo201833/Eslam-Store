@@ -8,6 +8,7 @@ import { CartComponent } from './pages/cart/cart.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { SuccessComponent } from './pages/success/success.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { AboutComponent } from './pages/about/about.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,6 +20,7 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'success', component: SuccessComponent },
+  { path: 'about', component: AboutComponent },
   { path: 'admin', component: AdminComponent },
   { path: '**', redirectTo: '' }
 ];
