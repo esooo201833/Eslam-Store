@@ -175,13 +175,13 @@ import { interval, take } from 'rxjs';
 
         @if (!loading) {
           <div class="relative min-h-screen">
-            <!-- Background -->
-            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-gray-50 to-gray-100"></div>
+            <!-- Background - Changed to a more noticeable gradient -->
+            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"></div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 scroll-reveal">
               @for (product of filteredProducts; track product.id) {
-                <div 
-                  class="relative bg-white rounded-3xl shadow-xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
+                <div
+                  class="relative bg-white rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-3xl hover:-translate-y-3 border-2 border-indigo-100"
                   (click)="goToProduct(product.id)"
                 >
                   <!-- Image Container -->
@@ -310,9 +310,25 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.loadProducts();
     this.loadCategories();
-    this.loadCartCount();
     this.loadWishlist();
     this.startSlideshow();
+    this.initScrollAnimations();
+  }
+
+  initScrollAnimations(): void {
+    setTimeout(() => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.scroll-reveal').forEach(el => {
+        observer.observe(el);
+      });
+    }, 100);
   }
 
   loadWishlist(): void {

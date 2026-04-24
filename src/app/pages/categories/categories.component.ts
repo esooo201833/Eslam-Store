@@ -32,43 +32,48 @@ import { FooterComponent } from '../../components/layout/footer.component';
         }
 
         @if (!loading) {
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @for (category of categoryData; track category.name) {
-              <div
-                class="relative h-96 rounded-3xl overflow-hidden cursor-pointer group transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
-                (click)="goToCategory(category.name)"
-              >
-                <img
-                  [src]="category.image"
-                  [alt]="category.name"
-                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                
-                <!-- Gradient Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
-                
-                <!-- Content -->
-                <div class="absolute inset-0 flex flex-col justify-end p-8">
-                  <div class="transform transition-all duration-500 group-hover:translate-y-[-8px]">
-                    <h2 class="text-4xl font-bold text-white mb-3 tracking-tight">
-                      {{ category.name }}
-                    </h2>
-                    <p class="text-gray-200 text-lg mb-6 leading-relaxed">
-                      {{ category.description }}
-                    </p>
-                    <button class="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-bold rounded-2xl shadow-2xl hover:bg-gray-900 hover:text-white transition-all duration-300 transform hover:scale-105 group-hover:translate-x-2">
-                      Shop Now
-                      <svg class="w-6 h-6 ml-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                      </svg>
-                    </button>
+          <div class="relative min-h-screen">
+            <!-- Background - Changed to a more noticeable gradient -->
+            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-reveal">
+              @for (category of categoryData; track category.name) {
+                <div
+                  class="relative bg-white rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-3xl hover:-translate-y-3 border-2 border-indigo-100"
+                  (click)="goToCategory(category.name)"
+                >
+                  <img
+                    [src]="category.image"
+                    [alt]="category.name"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  
+                  <!-- Gradient Overlay -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+                  
+                  <!-- Content -->
+                  <div class="absolute inset-0 flex flex-col justify-end p-8">
+                    <div class="transform transition-all duration-500 group-hover:translate-y-[-8px]">
+                      <h2 class="text-4xl font-bold text-white mb-3 tracking-tight">
+                        {{ category.name }}
+                      </h2>
+                      <p class="text-gray-200 text-lg mb-6 leading-relaxed">
+                        {{ category.description }}
+                      </p>
+                      <button class="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-bold rounded-2xl shadow-2xl hover:bg-gray-900 hover:text-white transition-all duration-300 transform hover:scale-105 group-hover:translate-x-2">
+                        Shop Now
+                        <svg class="w-6 h-6 ml-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                      </button>
+                    </div>
                   </div>
+
+                  <!-- Shine Effect -->
+                  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
                 </div>
-                
-                <!-- Shine Effect -->
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
-              </div>
-            }
+              }
+            </div>
           </div>
         }
       </section>
@@ -88,6 +93,23 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
+    this.initScrollAnimations();
+  }
+
+  initScrollAnimations(): void {
+    setTimeout(() => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.scroll-reveal').forEach(el => {
+        observer.observe(el);
+      });
+    }, 100);
   }
 
   loadCategories(): void {
