@@ -52,7 +52,7 @@ import { ProductService } from '../../services/product.service';
         }
 
         @if (cart.items.length > 0) {
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             <!-- Cart Items -->
             <div class="lg:col-span-2 space-y-6">
               @for (item of cart.items; track item.product.id) {

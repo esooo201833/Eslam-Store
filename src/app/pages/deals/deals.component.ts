@@ -59,7 +59,7 @@ import { LanguageService } from '../../services/language.service';
         }
 
         @if (!loading) {
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             @for (product of dealProducts; track product.id) {
               <div class="product-card bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden group cursor-pointer relative" (click)="goToProduct(product.id)">
                 <div class="absolute top-4 left-4 z-10">

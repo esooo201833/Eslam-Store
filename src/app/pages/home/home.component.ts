@@ -181,7 +181,7 @@ import { interval, take } from 'rxjs';
             <!-- Background - Changed to a more noticeable gradient -->
             <div class="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"></div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 scroll-reveal">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 scroll-reveal">
               @for (product of filteredProducts; track product.id) {
                 <div
                   class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-3xl hover:-translate-y-3 border-2 border-indigo-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-gray-600"

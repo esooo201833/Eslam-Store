@@ -56,7 +56,7 @@ import { PayPalService } from '../../services/paypal.service';
 
       @if (cart.items.length > 0) {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
             <!-- Checkout Form -->
             <div class="space-y-8">
               <!-- Customer Information -->
