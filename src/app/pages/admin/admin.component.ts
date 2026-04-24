@@ -204,6 +204,8 @@ import { FooterComponent } from '../../components/layout/footer.component';
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
                 <select
+                  id="product-category"
+                  name="product-category"
                   [(ngModel)]="productForm.category"
                   class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
                 >

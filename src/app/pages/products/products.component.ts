@@ -42,6 +42,8 @@ import { FooterComponent } from '../../components/layout/footer.component';
               />
             </div>
             <select
+              id="products-category"
+              name="products-category"
               (change)="onCategoryChange($event)"
               class="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
             >
@@ -53,6 +55,8 @@ import { FooterComponent } from '../../components/layout/footer.component';
               }
             </select>
             <select
+              id="products-sort"
+              name="products-sort"
               (change)="onSortChange($event)"
               class="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
             >

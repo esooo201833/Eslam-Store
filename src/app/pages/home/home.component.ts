@@ -132,6 +132,8 @@ import { interval, take } from 'rxjs';
               />
             </div>
             <select
+              id="home-category"
+              name="home-category"
               (change)="onCategoryChange($event)"
               class="input-modern cursor-pointer"
             >
