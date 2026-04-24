@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'https://flat-teams-report.loca.lt/api';
+  private apiUrl = 'https://poor-heads-heal.loca.lt/api';
 
   constructor(private http: HttpClient) {}
 

@@ -11,7 +11,7 @@ const paymentRoutes = require('./src/routes/payment');
 const { apiLimiter } = require('./src/middleware/rateLimiter');
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 3000;
 
 // Security Middleware
 app.use(helmet());
@@ -20,7 +20,7 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:4200',
   'https://eslam-store.vercel.app',
-  'https://flat-teams-report.loca.lt',
+  'https://poor-heads-heal.loca.lt',
   // Add your Fly.io URL here: 'https://eslam-store-backend.fly.dev'
 ];
 
