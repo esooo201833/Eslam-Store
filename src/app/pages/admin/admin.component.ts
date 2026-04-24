@@ -57,16 +57,18 @@ interface SiteSettings {
           >
             Dashboard
           </button>
-          <button
-            (click)="activeTab = 'employees'"
-            [class.bg-gray-900]="activeTab === 'employees'"
-            [class.text-white]="activeTab === 'employees'"
-            [class.text-gray-700]="activeTab !== 'employees'"
-            [class.hover:bg-gray-100]="activeTab !== 'employees'"
-            class="flex-1 px-6 py-3 rounded-xl font-medium transition-all"
-          >
-            Employees
-          </button>
+          @if (isSuperAdmin) {
+            <button
+              (click)="activeTab = 'employees'"
+              [class.bg-gray-900]="activeTab === 'employees'"
+              [class.text-white]="activeTab === 'employees'"
+              [class.text-gray-700]="activeTab !== 'employees'"
+              [class.hover:bg-gray-100]="activeTab !== 'employees'"
+              class="flex-1 px-6 py-3 rounded-xl font-medium transition-all"
+            >
+              Employees
+            </button>
+          }
           <button
             (click)="activeTab = 'site'"
             [class.bg-gray-900]="activeTab === 'site'"
@@ -725,6 +727,8 @@ export class AdminComponent implements OnInit {
     const isAdmin = localStorage.getItem('isAdmin');
     const adminEmail = localStorage.getItem('adminEmail');
     
+    console.log('Admin Access Check:', { isAdmin, adminEmail });
+    
     if (!isAdmin || isAdmin !== 'true') {
       this.router.navigate(['/']);
       return;
@@ -732,6 +736,8 @@ export class AdminComponent implements OnInit {
 
     this.currentAdminEmail = adminEmail || '';
     this.isSuperAdmin = this.currentAdminEmail === 'admin@admin.com';
+    
+    console.log('Super Admin Status:', this.isSuperAdmin);
   }
 
   logout(): void {
