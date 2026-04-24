@@ -34,6 +34,22 @@ import { inject } from '@angular/core';
               </h1>
             </div>
 
+            <!-- Mobile Menu Button -->
+            <button
+              (click)="toggleMobileMenu()"
+              class="md:hidden p-3 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all duration-300"
+            >
+              @if (isMobileMenuOpen) {
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              } @else {
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+              }
+            </button>
+
             <!-- Navigation -->
             <nav class="hidden md:flex items-center gap-10">
               <a
@@ -74,7 +90,7 @@ import { inject } from '@angular/core';
           </nav>
 
           <!-- Actions -->
-          <div class="flex items-center gap-5">
+          <div class="hidden md:flex items-center gap-5">
             <!-- Search -->
             <button
               (click)="toggleSearch()"
@@ -173,6 +189,98 @@ import { inject } from '@angular/core';
         </div>
       </div>
 
+      <!-- Mobile Menu -->
+      @if (isMobileMenuOpen) {
+        <div class="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 animate-fade-in">
+          <div class="px-4 py-4 space-y-3">
+            <a
+              routerLink="/"
+              (click)="toggleMobileMenu()"
+              class="block text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white font-semibold py-2"
+            >
+              {{ translate('nav.home') }}
+            </a>
+            <a
+              routerLink="/products"
+              (click)="toggleMobileMenu()"
+              class="block text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white font-semibold py-2"
+            >
+              {{ translate('nav.products') }}
+            </a>
+            <a
+              routerLink="/categories"
+              (click)="toggleMobileMenu()"
+              class="block text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white font-semibold py-2"
+            >
+              {{ translate('nav.categories') }}
+            </a>
+            <a
+              routerLink="/deals"
+              (click)="toggleMobileMenu()"
+              class="block text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white font-semibold py-2"
+            >
+              {{ translate('nav.deals') }}
+            </a>
+            <a
+              routerLink="/about"
+              (click)="toggleMobileMenu()"
+              class="block text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white font-semibold py-2"
+            >
+              {{ translate('nav.about') }}
+            </a>
+            <hr class="border-gray-200 dark:border-gray-800 my-4">
+            <div class="flex items-center gap-4">
+              <button
+                (click)="toggleSearch(); toggleMobileMenu()"
+                class="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                {{ translate('nav.search') }}
+              </button>
+              <button
+                routerLink="/cart"
+                (click)="toggleMobileMenu()"
+                class="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                {{ translate('nav.cart') }}
+                @if (cartItemCount > 0) {
+                  <span class="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {{ cartItemCount }}
+                  </span>
+                }
+              </button>
+              @if (isLoggedIn) {
+                <button
+                  (click)="logout(); toggleMobileMenu()"
+                  class="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                  </svg>
+                  Logout
+                </button>
+              } @else {
+                <button
+                  routerLink="/login"
+                  (click)="toggleMobileMenu()"
+                  class="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                  </svg>
+                  Login
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
       <!-- Search Modal -->
       @if (isSearchOpen) {
         <div class="absolute inset-x-0 top-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-2xl border-b border-gray-200 dark:border-gray-800 animate-fade-in">
@@ -223,6 +331,7 @@ export class NavbarComponent {
   currentLang: 'ar' | 'en' = 'ar';
   isDarkMode = false;
   isLoggedIn = false;
+  isMobileMenuOpen = false;
 
   constructor(
     private cartService: CartService,
@@ -295,6 +404,10 @@ export class NavbarComponent {
     localStorage.removeItem('user');
     this.isLoggedIn = false;
     this.router.navigate(['/home']);
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
   toggleTheme(): void {
