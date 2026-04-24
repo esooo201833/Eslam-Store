@@ -20,7 +20,7 @@ import { NgOptimizedImage } from '@angular/common';
                 width="48"
                 height="48"
                 alt="Eslam Store Logo"
-                class="w-12 h-12 object-contain mix-blend-multiply"
+                class="w-12 h-12 object-contain"
               />
               <span class="text-xl font-bold text-gradient">Eslam Store</span>
             </div>
@@ -75,6 +75,8 @@ import { NgOptimizedImage } from '@angular/common';
             <div class="flex gap-2">
               <input
                 type="email"
+                id="newsletter-email"
+                name="newsletter-email"
                 placeholder="Your email"
                 class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
