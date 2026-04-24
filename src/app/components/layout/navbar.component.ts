@@ -11,7 +11,7 @@ import { NgOptimizedImage } from '@angular/common';
   imports: [CommonModule, FormsModule, RouterModule, NgOptimizedImage],
   template: `
     <!-- Header -->
-    <header class="glass shadow-lg sticky top-0 z-50 border-b border-gray-100">
+    <header class="bg-white shadow-lg sticky top-0 z-50 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex items-center justify-between h-16">
             <!-- Logo -->
