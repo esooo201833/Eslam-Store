@@ -5,14 +5,13 @@ import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { PaymentService } from '../../services/payment.service';
 import { ToastService } from '../../services/toast.service';
-import { NavbarComponent } from '../../components/layout/navbar.component';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { Cart } from '../../models/cart.model';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterModule, FooterComponent],
   template: `
     <div class="min-h-screen bg-gray-50">
       <!-- Header -->

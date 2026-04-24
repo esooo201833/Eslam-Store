@@ -2,15 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
-import { NavbarComponent } from '../../components/layout/navbar.component';
 import { FooterComponent } from '../../components/layout/footer.component';
-import { PromoModalComponent } from '../../components/ui/promo-modal.component';
 import { Cart, CartItem } from '../../models/cart.model';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavbarComponent, FooterComponent, PromoModalComponent],
+  imports: [CommonModule, RouterModule, FooterComponent],
   template: `
     <div class="min-h-screen bg-gray-50">
       <!-- Header -->
