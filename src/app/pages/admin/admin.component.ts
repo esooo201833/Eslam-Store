@@ -446,54 +446,54 @@ interface SiteSettings {
 
       <!-- Product Modal -->
       @if (isModalOpen) {
-        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4">
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <h2 class="text-2xl font-bold mb-6">{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h2>
-            <div class="space-y-4">
+            <div class="space-y-5">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Product Name</label>
                 <input
                   type="text"
                   id="product-name"
                   name="product-name"
                   [(ngModel)]="productForm.name"
                   placeholder="Product Name"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Price</label>
                 <input
                   [(ngModel)]="productForm.price"
                   type="number"
                   id="product-price"
                   name="product-price"
                   placeholder="0.00"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Description</label>
                 <textarea
                   [(ngModel)]="productForm.description"
                   id="product-description"
                   name="product-description"
                   placeholder="Product description"
-                  rows="3"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  rows="4"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none"
                 ></textarea>
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Image</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Image</label>
                 <div class="space-y-3">
                   <input
                     type="file"
                     (change)="onProductFileSelected($event)"
                     accept="image/*"
-                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
                   />
                   <input
                     type="text"
@@ -501,21 +501,21 @@ interface SiteSettings {
                     name="product-image"
                     [(ngModel)]="productForm.image"
                     placeholder="Or enter image URL"
-                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                   />
                   @if (productForm.image) {
-                    <img [src]="productForm.image" class="w-full h-48 object-cover rounded-xl" />
+                    <img [src]="productForm.image" class="w-full h-48 object-cover rounded-xl border-2 border-gray-200" />
                   }
                 </div>
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Category</label>
                 <select
                   id="product-category"
                   name="product-category"
                   [(ngModel)]="productForm.category"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
                 >
                   <option value="">Select category</option>
                   @for (category of categories; track category) {
@@ -525,22 +525,22 @@ interface SiteSettings {
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Stock</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Stock</label>
                 <input
                   [(ngModel)]="productForm.stock"
                   type="number"
                   id="product-stock"
                   name="product-stock"
                   placeholder="0"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
             </div>
 
-            <div class="flex gap-3 mt-6">
+            <div class="flex gap-3 mt-8">
               <button
                 (click)="closeModal()"
-                class="flex-1 px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition-colors font-medium"
+                class="flex-1 px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 transition-colors font-medium"
               >
                 Cancel
               </button>
