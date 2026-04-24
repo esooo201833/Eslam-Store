@@ -170,6 +170,9 @@ export class FooterComponent {
       alert('Admin login successful!');
       // Store admin session
       localStorage.setItem('isAdmin', 'true');
+      localStorage.setItem('adminEmail', this.adminEmail);
+      // Navigate to admin page
+      window.location.href = '/admin';
     } else {
       this.loginError = 'Invalid email or password';
     }
