@@ -170,6 +170,8 @@ import { FooterComponent } from '../../components/layout/footer.component';
                 <input
                   [(ngModel)]="productForm.price"
                   type="number"
+                  id="product-price"
+                  name="product-price"
                   placeholder="0.00"
                   class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
@@ -179,6 +181,8 @@ import { FooterComponent } from '../../components/layout/footer.component';
                 <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
                 <textarea
                   [(ngModel)]="productForm.description"
+                  id="product-description"
+                  name="product-description"
                   placeholder="Product description"
                   rows="3"
                   class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
@@ -215,6 +219,8 @@ import { FooterComponent } from '../../components/layout/footer.component';
                 <input
                   [(ngModel)]="productForm.stock"
                   type="number"
+                  id="product-stock"
+                  name="product-stock"
                   placeholder="0"
                   class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
