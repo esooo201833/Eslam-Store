@@ -17,10 +17,10 @@ import { NgOptimizedImage } from '@angular/common';
             <div class="flex items-center gap-3 mb-4">
               <img
                 ngSrc="/logo.png"
-                width="40"
-                height="40"
+                width="48"
+                height="48"
                 alt="Eslam Store Logo"
-                class="w-10 h-10 rounded-xl object-contain shadow-lg"
+                class="w-12 h-12 object-contain"
               />
               <span class="text-xl font-bold text-gradient">Eslam Store</span>
             </div>
