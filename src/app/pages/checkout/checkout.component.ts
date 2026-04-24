@@ -103,6 +103,7 @@ import { Cart } from '../../models/cart.model';
                   <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-black transition-all [class.selected='border-black']">
                     <input
                       type="radio"
+                      id="payment-paypal"
                       name="paymentMethod"
                       value="paypal"
                       [(ngModel)]="paymentMethod"
@@ -121,6 +122,7 @@ import { Cart } from '../../models/cart.model';
                   <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-black transition-all">
                     <input
                       type="radio"
+                      id="payment-stripe"
                       name="paymentMethod"
                       value="stripe"
                       [(ngModel)]="paymentMethod"
