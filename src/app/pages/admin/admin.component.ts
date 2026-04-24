@@ -985,6 +985,12 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  loadShippingCompanies(): void {
+    this.shippingService.getShippingCompanies().subscribe(companies => {
+      this.shippingCompanies = companies;
+    });
+  }
+
   loadOrders(): void {
     const savedOrders = localStorage.getItem('orders');
     if (savedOrders) {
