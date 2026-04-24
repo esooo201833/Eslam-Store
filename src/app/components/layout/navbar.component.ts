@@ -205,6 +205,7 @@ export class NavbarComponent {
     this.languageService.currentLanguage$.subscribe(lang => {
       this.currentLang = lang;
     });
+    this.isDarkMode = this.themeService.currentTheme;
     this.themeService.isDarkMode$.subscribe(isDark => {
       this.isDarkMode = isDark;
     });
