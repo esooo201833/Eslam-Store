@@ -81,18 +81,18 @@ export class CategoriesComponent implements OnInit {
     this.categoryData = [
       {
         name: 'Electronics',
-        description: 'Cutting-edge technology and gadgets',
-        image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800&q=80'
+        description: 'Latest gadgets and tech',
+        image: '/categories/electronics.jpg'
       },
       {
         name: 'Clothing',
         description: 'Premium fashion and apparel',
-        image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&q=80'
+        image: '/categories/clothing.jpg'
       },
       {
         name: 'Accessories',
         description: 'Stylish accessories and essentials',
-        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80'
+        image: '/categories/accessories.jpg'
       }
     ];
     this.loading = false;
