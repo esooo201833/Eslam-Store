@@ -202,6 +202,26 @@ import { Cart } from '../../models/cart.model';
                   <label class="flex items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer hover:border-gray-900 transition-all duration-300 hover:shadow-lg group">
                     <input
                       type="radio"
+                      id="payment-cash"
+                      name="paymentMethod"
+                      value="cash_on_delivery"
+                      [(ngModel)]="paymentMethod"
+                      class="mr-4 w-6 h-6 text-gray-900"
+                    />
+                    <div class="flex-1">
+                      <span class="font-bold text-lg text-gray-900 group-hover:text-black transition-colors">Cash on Delivery</span>
+                      <p class="text-sm text-gray-500 mt-1">Pay when your order arrives</p>
+                    </div>
+                    <div class="w-14 h-9 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                      <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                      </svg>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer hover:border-gray-900 transition-all duration-300 hover:shadow-lg group">
+                    <input
+                      type="radio"
                       id="payment-paypal"
                       name="paymentMethod"
                       value="paypal"
@@ -331,7 +351,7 @@ export class CheckoutComponent implements OnInit {
   cart: Cart = { items: [], total: 0 };
   customerName = '';
   customerEmail = '';
-  paymentMethod: 'paypal' | 'stripe' = 'paypal';
+  paymentMethod: 'paypal' | 'stripe' | 'cash_on_delivery' = 'cash_on_delivery';
   processing = false;
 
   // Address fields
@@ -384,7 +404,13 @@ export class CheckoutComponent implements OnInit {
     this.processing = true;
 
     try {
-      if (this.paymentMethod === 'paypal') {
+      if (this.paymentMethod === 'cash_on_delivery') {
+        // For cash on delivery, create order directly without payment processing
+        const orderId = 'COD_' + Date.now();
+        this.toastService.success('Order placed successfully! You will pay on delivery.');
+        this.cartService.clearCart();
+        this.router.navigate(['/success'], { queryParams: { orderId, method: 'cash_on_delivery' } });
+      } else if (this.paymentMethod === 'paypal') {
         const result = await this.paymentService.processPayPalPayment(this.cart.total * 1.1);
         if (result.success) {
           this.toastService.success('Payment successful!');
