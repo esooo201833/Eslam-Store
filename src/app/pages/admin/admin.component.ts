@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { FooterComponent } from '../../components/layout/footer.component';
+import { NavbarComponent } from '../../components/layout/navbar.component';
 import { LanguageService } from '../../services/language.service';
 import { ShippingService } from '../../services/shipping.service';
 import { ShippingCompany } from '../../models/shipping.model';
@@ -23,43 +24,11 @@ interface SiteSettings {
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterModule, FooterComponent, NavbarComponent],
   template: `
-    <div class="min-h-screen bg-gray-50">
-      <!-- Header -->
-      <header class="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex items-center justify-between h-20">
-            <button
-              routerLink="/"
-              class="flex items-center gap-2 text-gray-600 hover:text-black transition-colors font-medium"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-              </svg>
-              {{ translate('admin.back') }}
-            </button>
-            <h1 class="text-2xl font-bold">Admin Panel</h1>
-            <div class="flex items-center gap-3">
-              <button
-                (click)="toggleLanguage()"
-                class="p-3 text-gray-600 hover:text-black hover:bg-gray-100 rounded-xl transition-all duration-300 transform hover:scale-110"
-                title="Change Language"
-              >
-                <span class="font-bold text-lg">{{ currentLang === 'ar' ? 'EN' : 'ع' }}</span>
-              </button>
-              <button
-                (click)="logout()"
-                class="px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-all hover:shadow-lg"
-              >
-                {{ translate('admin.logout') }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <app-navbar [isAdminPanel]="true" [showAdmin]="false"></app-navbar>
+    <div class="min-h-screen bg-gray-50 pt-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Tabs Navigation -->
         <div class="bg-white rounded-2xl shadow-lg p-2 mb-8 flex flex-wrap gap-2">
           <button

@@ -30,6 +30,8 @@ export class LanguageService {
       'footer.terms': 'الشروط والأحكام',
       'footer.rights': 'جميع الحقوق محفوظة',
       'footer.admin': 'أدمن',
+      'theme.dark': 'الوضع الداكن',
+      'theme.light': 'الوضع الفاتح',
       
       // Admin
       'admin.dashboard': 'لوحة التحكم',
@@ -234,6 +236,8 @@ export class LanguageService {
       'footer.terms': 'Terms of Service',
       'footer.rights': 'All rights reserved',
       'footer.admin': 'Admin',
+      'theme.dark': 'Dark Mode',
+      'theme.light': 'Light Mode',
       
       // Admin
       'admin.dashboard': 'Dashboard',
