@@ -38,28 +38,28 @@ import { LanguageService } from '../../services/language.service';
                 routerLink="/"
                 class="nav-link text-gray-700 hover:text-black font-semibold transition-all relative group py-2"
             >
-              Home
+              {{ translate('nav.home') }}
               <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gray-900 to-gray-600 transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
               routerLink="/products"
               class="nav-link text-gray-700 hover:text-black font-semibold transition-all relative group py-2"
             >
-              Products
+              {{ translate('nav.products') }}
               <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gray-900 to-gray-600 transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
               routerLink="/categories"
               class="nav-link text-gray-700 hover:text-black font-semibold transition-all relative group py-2"
             >
-              Categories
+              {{ translate('nav.categories') }}
               <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gray-900 to-gray-600 transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
               routerLink="/deals"
               class="nav-link text-gray-700 hover:text-black font-semibold transition-all relative group py-2"
             >
-              Deals
+              {{ translate('nav.deals') }}
               <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gray-900 to-gray-600 transition-all duration-300 group-hover:w-full"></span>
             </a>
           </nav>
@@ -224,5 +224,9 @@ export class NavbarComponent {
   toggleLanguage(): void {
     const newLang = this.currentLang === 'ar' ? 'en' : 'ar';
     this.languageService.setLanguage(newLang);
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
   }
 }

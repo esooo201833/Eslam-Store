@@ -8,12 +8,14 @@ import { PromoModalComponent } from '../../components/ui/promo-modal.component';
 import { NavbarComponent } from '../../components/layout/navbar.component';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { LanguageService } from '../../services/language.service';
+import { CountryService } from '../../services/country.service';
+import { CountryModalComponent } from '../../components/ui/country-modal.component';
 import { interval, take } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, PromoModalComponent, NavbarComponent, FooterComponent],
+  imports: [CommonModule, RouterModule, PromoModalComponent, NavbarComponent, FooterComponent, CountryModalComponent],
   template: `
     <div class="min-h-screen flex flex-col" style="background-color: var(--color-bg-secondary)">
       <!-- Navbar -->
@@ -218,7 +220,7 @@ import { interval, take } from 'rxjs';
                     <!-- Quick Add Button -->
                     <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
                       <button
-                        (click)="addToCart($event, product)"
+                        (click)="addToCart(product)"
                         class="px-8 py-3 bg-white text-gray-900 font-bold rounded-2xl shadow-2xl hover:bg-gray-900 hover:text-white transition-all duration-300 transform hover:scale-105"
                       >
                         {{ translate('home.addToCart') }}
@@ -238,11 +240,11 @@ import { interval, take } from 'rxjs';
                       <div class="flex flex-col">
                         <span class="text-xs text-gray-400 uppercase tracking-wider">{{ translate('home.price') }}</span>
                         <span class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                          $ {{ product.price.toFixed(2) }}
+                          $ {{ getPrice(product).toFixed(2) }}
                         </span>
                       </div>
                       <button
-                        (click)="addToCart($event, product)"
+                        (click)="addToCart(product)"
                         class="p-3 bg-gray-900 text-white rounded-xl shadow-lg hover:bg-black hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                       >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -277,6 +279,9 @@ import { interval, take } from 'rxjs';
 
       <!-- Promo Modal -->
       <app-promo-modal [isOpen]="showPromoModal" (onClose)="showPromoModal = false"></app-promo-modal>
+
+      <!-- Country Selection Modal -->
+      <app-country-modal [isOpen]="showCountryModal" (onClose)="showCountryModal = false"></app-country-modal>
     </div>
   `,
   styles: [`
@@ -304,17 +309,24 @@ export class HomeComponent implements OnInit {
   ];
   wishlist: string[] = [];
   currentLang: 'ar' | 'en' = 'ar';
+  showCountryModal = false;
 
   constructor(
     private productService: ProductService,
     private cartService: CartService,
     private router: Router,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private countryService: CountryService
   ) {
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
       this.currentLang = lang;
     });
+
+    // Show country modal if no country is selected
+    if (!this.countryService.hasSelectedCountry()) {
+      this.showCountryModal = true;
+    }
   }
 
   ngOnInit(): void {
@@ -441,10 +453,14 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/product', id]);
   }
 
-  addToCart(event: Event, product: Product): void {
-    event.stopPropagation();
-    this.cartService.addToCart(product);
-    this.cartItemCount = this.cartService.getItemCount();
+  addToCart(product: Product): void {
+    const price = this.productService.getPriceByCountry(product);
+    this.cartService.addToCart(product, price);
+    alert(`${this.translate('home.addedToCart')}: ${product.name}`);
+  }
+
+  getPrice(product: Product): number {
+    return this.productService.getPriceByCountry(product);
   }
 
   translate(key: string): string {

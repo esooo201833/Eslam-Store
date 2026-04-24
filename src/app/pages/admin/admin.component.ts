@@ -516,7 +516,7 @@ interface SiteSettings {
               </div>
               
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.price') }}</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.price') }} ({{ translate('admin.defaultPrice') }})</label>
                 <input
                   [(ngModel)]="productForm.price"
                   type="number"
@@ -525,6 +525,46 @@ interface SiteSettings {
                   placeholder="0.00"
                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
+              </div>
+
+              <!-- Prices by Country -->
+              <div class="bg-gray-50 p-4 rounded-xl">
+                <h3 class="font-bold text-gray-900 mb-4">{{ translate('admin.pricesByCountry') }}</h3>
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">🇪🇬 {{ translate('admin.egyptPrice') }}</label>
+                    <input
+                      [(ngModel)]="productForm.pricesByCountry.egypt"
+                      type="number"
+                      id="price-egypt"
+                      name="price-egypt"
+                      placeholder="0.00"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">🇸🇦 {{ translate('admin.saudiPrice') }}</label>
+                    <input
+                      [(ngModel)]="productForm.pricesByCountry.saudi"
+                      type="number"
+                      id="price-saudi"
+                      name="price-saudi"
+                      placeholder="0.00"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">🇴🇲 {{ translate('admin.omanPrice') }}</label>
+                    <input
+                      [(ngModel)]="productForm.pricesByCountry.oman"
+                      type="number"
+                      id="price-oman"
+                      name="price-oman"
+                      placeholder="0.00"
+                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                  </div>
+                </div>
               </div>
               
               <div>
@@ -739,6 +779,11 @@ export class AdminComponent implements OnInit {
   productForm = {
     name: '',
     price: '0',
+    pricesByCountry: {
+      egypt: '',
+      saudi: '',
+      oman: ''
+    },
     description: '',
     image: '',
     category: '',
@@ -1023,6 +1068,11 @@ export class AdminComponent implements OnInit {
     this.productForm = {
       name: '',
       price: '0',
+      pricesByCountry: {
+        egypt: '',
+        saudi: '',
+        oman: ''
+      },
       description: '',
       image: '',
       category: '',
@@ -1037,6 +1087,11 @@ export class AdminComponent implements OnInit {
     this.productForm = {
       name: product.name,
       price: product.price.toString(),
+      pricesByCountry: {
+        egypt: product.pricesByCountry?.egypt?.toString() || '',
+        saudi: product.pricesByCountry?.saudi?.toString() || '',
+        oman: product.pricesByCountry?.oman?.toString() || ''
+      },
       description: product.description,
       image: product.image,
       category: product.category,
@@ -1058,7 +1113,12 @@ export class AdminComponent implements OnInit {
     const productData = {
       ...this.productForm,
       price: parseFloat(this.productForm.price),
-      stock: parseInt(this.productForm.stock)
+      stock: parseInt(this.productForm.stock),
+      pricesByCountry: {
+        egypt: this.productForm.pricesByCountry.egypt ? parseFloat(this.productForm.pricesByCountry.egypt) : undefined,
+        saudi: this.productForm.pricesByCountry.saudi ? parseFloat(this.productForm.pricesByCountry.saudi) : undefined,
+        oman: this.productForm.pricesByCountry.oman ? parseFloat(this.productForm.pricesByCountry.oman) : undefined
+      }
     };
 
     if (this.isEditMode && this.editingProductId) {

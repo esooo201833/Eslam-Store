@@ -5,6 +5,7 @@ import { CartService } from '../../services/cart.service';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { Cart, CartItem } from '../../models/cart.model';
 import { LanguageService } from '../../services/language.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-cart',
@@ -74,13 +75,13 @@ import { LanguageService } from '../../services/language.service';
                         <div class="flex flex-col">
                           <span class="text-xs text-gray-400 uppercase tracking-wider">{{ translate('home.price') }}</span>
                           <span class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                            $ {{ item.product.price.toFixed(2) }}
+                            $ {{ getPrice(item.product).toFixed(2) }}
                           </span>
                         </div>
                         <div class="flex flex-col text-right">
                           <span class="text-xs text-gray-400 uppercase tracking-wider">{{ translate('cart.total') }}</span>
                           <span class="text-2xl font-bold text-gray-900">
-                            $ {{ (item.product.price * item.quantity).toFixed(2) }}
+                            $ {{ (getPrice(item.product) * item.quantity).toFixed(2) }}
                           </span>
                         </div>
                       </div>
@@ -182,7 +183,8 @@ export class CartComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private router: Router,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private productService: ProductService
   ) {
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
@@ -202,6 +204,10 @@ export class CartComponent implements OnInit {
 
   removeFromCart(productId: string): void {
     this.cartService.removeFromCart(productId);
+  }
+
+  getPrice(product: any): number {
+    return this.productService.getPriceByCountry(product);
   }
 
   translate(key: string): string {

@@ -8,6 +8,7 @@ import { ToastService } from '../../services/toast.service';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { Cart } from '../../models/cart.model';
 import { LanguageService } from '../../services/language.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-checkout',
@@ -312,7 +313,7 @@ import { LanguageService } from '../../services/language.service';
                         <h3 class="font-bold text-sm text-gray-900">{{ item.product.name }}</h3>
                         <p class="text-gray-500 text-xs mt-1">Qty: {{ item.quantity }}</p>
                       </div>
-                      <span class="font-bold text-lg">\${{ (item.product.price * item.quantity).toFixed(2) }}</span>
+                      <span class="font-bold text-lg">$ {{ (getPrice(item.product) * item.quantity).toFixed(2) }}</span>
                     </div>
                   }
                 </div>
@@ -384,7 +385,8 @@ export class CheckoutComponent implements OnInit {
     private paymentService: PaymentService,
     private toastService: ToastService,
     private router: Router,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private productService: ProductService
   ) {
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
@@ -447,5 +449,9 @@ export class CheckoutComponent implements OnInit {
 
   translate(key: string): string {
     return this.languageService.translate(key);
+  }
+
+  getPrice(product: any): number {
+    return this.productService.getPriceByCountry(product);
   }
 }
