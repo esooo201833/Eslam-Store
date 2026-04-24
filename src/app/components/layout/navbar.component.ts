@@ -17,7 +17,7 @@ import { NgOptimizedImage } from '@angular/common';
             <!-- Logo -->
             <div class="flex items-center gap-2">
               <img
-                ngSrc="/logo%20(2).png"
+                ngSrc="/logo2.png"
                 width="48"
                 height="48"
                 alt="Eslam Store Logo"
