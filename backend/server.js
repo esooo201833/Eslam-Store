@@ -20,7 +20,8 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:4200',
   'https://eslam-store.vercel.app',
-  'https://smooth-walls-invent.loca.lt'
+  'https://smooth-walls-invent.loca.lt',
+  // Add your Glitch URL here: 'https://your-project-name.glitch.me'
 ];
 
 app.use(cors({
