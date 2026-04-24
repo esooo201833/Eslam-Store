@@ -6,6 +6,8 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { FooterComponent } from '../../components/layout/footer.component';
 import { LanguageService } from '../../services/language.service';
+import { ShippingService } from '../../services/shipping.service';
+import { ShippingCompany } from '../../models/shipping.model';
 
 interface SiteSettings {
   siteName: string;
@@ -92,6 +94,18 @@ interface SiteSettings {
           >
             {{ translate('admin.site') }}
           </button>
+          @if (isSuperAdmin || hasShippingPermission) {
+            <button
+              (click)="activeTab = 'shipping'"
+              [class.bg-gray-900]="activeTab === 'shipping'"
+              [class.text-white]="activeTab === 'shipping'"
+              [class.text-gray-700]="activeTab !== 'shipping'"
+              [class.hover:bg-gray-100]="activeTab !== 'shipping'"
+              class="flex-1 px-6 py-3 rounded-xl font-medium transition-all"
+            >
+              {{ translate('admin.shipping') }}
+            </button>
+          }
           <button
             (click)="activeTab = 'products'"
             [class.bg-gray-900]="activeTab === 'products'"
@@ -377,6 +391,69 @@ interface SiteSettings {
                 >
                   {{ translate('admin.saveChanges') }}
                 </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Shipping Tab -->
+        @if (activeTab === 'shipping') {
+          <div class="space-y-6">
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+              <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold">{{ translate('admin.shippingCompanies') }}</h2>
+                <button
+                  (click)="openShippingModal()"
+                  class="px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg"
+                >
+                  + {{ translate('admin.addShippingCompany') }}
+                </button>
+              </div>
+              <div class="space-y-4">
+                @for (company of shippingCompanies; track company.id) {
+                  <div class="border border-gray-200 rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                      <div class="flex items-center gap-4">
+                        @if (company.logo) {
+                          <img [src]="company.logo" class="w-16 h-16 object-contain rounded-lg" />
+                        }
+                        <div>
+                          <h3 class="font-bold text-lg">{{ company.name }}</h3>
+                          <p class="text-sm text-gray-500">{{ company.countries.length }} {{ translate('admin.countries') }}</p>
+                        </div>
+                      </div>
+                      <div class="flex gap-2">
+                        <button
+                          (click)="editShipping(company)"
+                          class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                          {{ translate('admin.edit') }}
+                        </button>
+                        <button
+                          (click)="deleteShipping(company.id)"
+                          class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                        >
+                          {{ translate('admin.delete') }}
+                        </button>
+                      </div>
+                    </div>
+                    <div class="space-y-3">
+                      @for (country of company.countries; track country.country) {
+                        <div class="bg-gray-50 rounded-lg p-4">
+                          <h4 class="font-semibold mb-2">{{ translateCountry(country.country) }}</h4>
+                          <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            @for (governorate of country.governorates; track governorate.governorate) {
+                              <div class="flex justify-between items-center bg-white rounded-lg p-2 border border-gray-200">
+                                <span class="text-sm">{{ governorate.governorate }}</span>
+                                <span class="font-bold text-sm">$ {{ governorate.price }}</span>
+                              </div>
+                            }
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
               </div>
             </div>
           </div>
@@ -807,8 +884,20 @@ export class AdminComponent implements OnInit {
       products: false,
       categories: false,
       orders: false,
-      site: false
+      site: false,
+      shipping: false
     }
+  };
+
+  // Shipping management
+  shippingCompanies: ShippingCompany[] = [];
+  isShippingModalOpen = false;
+  isEditShipping = false;
+  editingShippingId: string | null = null;
+  shippingForm = {
+    name: '',
+    logo: '',
+    countries: [] as any[]
   };
 
   // Site management
@@ -829,13 +918,15 @@ export class AdminComponent implements OnInit {
 
   // Permissions
   isSuperAdmin = false;
+  hasShippingPermission = false;
   currentAdminEmail = '';
   currentLang: 'ar' | 'en' = 'ar';
 
   constructor(
     private productService: ProductService,
     private router: Router,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private shippingService: ShippingService
   ) {
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
@@ -850,6 +941,7 @@ export class AdminComponent implements OnInit {
     this.loadEmployees();
     this.loadCategories();
     this.loadSiteSettings();
+    this.loadShippingCompanies();
   }
 
   checkAdminAccess(): void {
@@ -866,7 +958,19 @@ export class AdminComponent implements OnInit {
     this.currentAdminEmail = adminEmail || '';
     this.isSuperAdmin = this.currentAdminEmail === 'admin@admin.com';
     
+    // Check shipping permission for employees
+    if (!this.isSuperAdmin) {
+      const employees = JSON.parse(localStorage.getItem('employees') || '[]');
+      const currentEmployee = employees.find((e: any) => e.email === this.currentAdminEmail);
+      if (currentEmployee && currentEmployee.permissions) {
+        this.hasShippingPermission = currentEmployee.permissions.shipping || false;
+      }
+    } else {
+      this.hasShippingPermission = true; // Super admin has all permissions
+    }
+    
     console.log('Super Admin Status:', this.isSuperAdmin);
+    console.log('Shipping Permission:', this.hasShippingPermission);
   }
 
   logout(): void {
@@ -960,7 +1064,8 @@ export class AdminComponent implements OnInit {
         products: false,
         categories: false,
         orders: false,
-        site: false
+        site: false,
+        shipping: false
       }
     };
     this.isEmployeeModalOpen = true;
@@ -1039,10 +1144,54 @@ export class AdminComponent implements OnInit {
   }
 
   deleteCategory(category: string): void {
-    if (confirm(`Are you sure you want to delete the category "${category}"?`)) {
+    if (confirm('Are you sure you want to delete this category?')) {
       this.categories = this.categories.filter(c => c !== category);
       localStorage.setItem('categories', JSON.stringify(this.categories));
     }
+  }
+
+  // Shipping management methods
+  openShippingModal(): void {
+    this.isEditShipping = false;
+    this.editingShippingId = null;
+    this.shippingForm = {
+      name: '',
+      logo: '',
+      countries: []
+    };
+    this.isShippingModalOpen = true;
+  }
+
+  closeShippingModal(): void {
+    this.isShippingModalOpen = false;
+  }
+
+  editShipping(company: ShippingCompany): void {
+    this.isEditShipping = true;
+    this.editingShippingId = company.id;
+    this.shippingForm = {
+      name: company.name,
+      logo: company.logo || '',
+      countries: company.countries
+    };
+    this.isShippingModalOpen = true;
+  }
+
+  deleteShipping(id: string): void {
+    if (confirm('Are you sure you want to delete this shipping company?')) {
+      this.shippingService.deleteShippingCompany(id).subscribe(() => {
+        this.loadShippingCompanies();
+      });
+    }
+  }
+
+  translateCountry(country: string): string {
+    const countryNames: { [key: string]: string } = {
+      'egypt': this.currentLang === 'ar' ? 'مصر' : 'Egypt',
+      'saudi': this.currentLang === 'ar' ? 'السعودية' : 'Saudi Arabia',
+      'oman': this.currentLang === 'ar' ? 'عمان' : 'Oman'
+    };
+    return countryNames[country] || country;
   }
 
   get totalRevenue(): number {
