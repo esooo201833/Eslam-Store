@@ -21,7 +21,7 @@ const allowedOrigins = [
   'http://localhost:4200',
   'https://eslam-store.vercel.app',
   'https://smooth-walls-invent.loca.lt',
-  // Add your Glitch URL here: 'https://your-project-name.glitch.me'
+  // Add your Fly.io URL here: 'https://eslam-store-backend.fly.dev'
 ];
 
 app.use(cors({
