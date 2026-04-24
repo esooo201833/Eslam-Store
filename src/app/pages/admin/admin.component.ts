@@ -6,6 +6,14 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { FooterComponent } from '../../components/layout/footer.component';
 
+interface SiteSettings {
+  promoText: string;
+  promoLink: string;
+  homeBackground: string;
+  categoryBackground: string;
+  [key: string]: string;
+}
+
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -246,24 +254,46 @@ import { FooterComponent } from '../../components/layout/footer.component';
 
             <div class="bg-white rounded-2xl shadow-lg p-6">
               <h2 class="text-xl font-bold mb-6">Background Images</h2>
-              <div class="space-y-4">
+              <div class="space-y-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Home Background Image URL</label>
-                  <input
-                    type="text"
-                    [(ngModel)]="siteSettings.homeBackground"
-                    placeholder="Enter image URL"
-                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
-                  />
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Home Background Image</label>
+                  <div class="space-y-3">
+                    <input
+                      type="file"
+                      (change)="onFileSelected($event, 'homeBackground')"
+                      accept="image/*"
+                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                    <input
+                      type="text"
+                      [(ngModel)]="siteSettings.homeBackground"
+                      placeholder="Or enter image URL"
+                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                    @if (siteSettings.homeBackground) {
+                      <img [src]="siteSettings.homeBackground" class="w-full h-48 object-cover rounded-xl" />
+                    }
+                  </div>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Category Background Image URL</label>
-                  <input
-                    type="text"
-                    [(ngModel)]="siteSettings.categoryBackground"
-                    placeholder="Enter image URL"
-                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
-                  />
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Category Background Image</label>
+                  <div class="space-y-3">
+                    <input
+                      type="file"
+                      (change)="onFileSelected($event, 'categoryBackground')"
+                      accept="image/*"
+                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                    <input
+                      type="text"
+                      [(ngModel)]="siteSettings.categoryBackground"
+                      placeholder="Or enter image URL"
+                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                    @if (siteSettings.categoryBackground) {
+                      <img [src]="siteSettings.categoryBackground" class="w-full h-48 object-cover rounded-xl" />
+                    }
+                  </div>
                 </div>
                 <button
                   (click)="saveSiteSettings()"
@@ -434,15 +464,26 @@ import { FooterComponent } from '../../components/layout/footer.component';
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
-                <input
-                  type="text"
-                  id="product-image"
-                  name="product-image"
-                  [(ngModel)]="productForm.image"
-                  placeholder="https://example.com/image.jpg"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-2">Image</label>
+                <div class="space-y-3">
+                  <input
+                    type="file"
+                    (change)="onProductFileSelected($event)"
+                    accept="image/*"
+                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  />
+                  <input
+                    type="text"
+                    id="product-image"
+                    name="product-image"
+                    [(ngModel)]="productForm.image"
+                    placeholder="Or enter image URL"
+                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  />
+                  @if (productForm.image) {
+                    <img [src]="productForm.image" class="w-full h-48 object-cover rounded-xl" />
+                  }
+                </div>
               </div>
               
               <div>
@@ -650,7 +691,7 @@ export class AdminComponent implements OnInit {
   };
 
   // Site management
-  siteSettings = {
+  siteSettings: SiteSettings = {
     promoText: '',
     promoLink: '',
     homeBackground: '',
@@ -735,6 +776,31 @@ export class AdminComponent implements OnInit {
   saveSiteSettings(): void {
     localStorage.setItem('siteSettings', JSON.stringify(this.siteSettings));
     alert('Site settings saved successfully!');
+  }
+
+  // File upload methods
+  onFileSelected(event: Event, field: string): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        (this.siteSettings as any)[field] = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onProductFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.productForm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   // Employee management methods
