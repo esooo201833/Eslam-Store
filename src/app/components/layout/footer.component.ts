@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterModule, NgOptimizedImage],
+  imports: [CommonModule, RouterModule, NgOptimizedImage, FormsModule],
   template: `
     <!-- Modern Footer -->
     <footer class="mt-16 bg-gradient-to-b from-white to-gray-50 border-t border-gray-200/50">
@@ -100,9 +101,77 @@ import { NgOptimizedImage } from '@angular/common';
             <a href="#" class="text-gray-500 hover:text-gray-900 text-sm transition-colors">Terms of Service</a>
             <a href="#" class="text-gray-500 hover:text-gray-900 text-sm transition-colors">Cookie Policy</a>
           </div>
+          <button
+            (click)="showAdminLogin = !showAdminLogin"
+            class="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-all"
+          >
+            Admin
+          </button>
         </div>
+
+        <!-- Admin Login Modal -->
+        @if (showAdminLogin) {
+          <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" (click)="showAdminLogin = false">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md transform transition-all" (click)="$event.stopPropagation()">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Admin Login</h3>
+                <button (click)="showAdminLogin = false" class="text-gray-400 hover:text-gray-900 transition-colors">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                  <input
+                    type="email"
+                    [(ngModel)]="adminEmail"
+                    placeholder="admin@admin.com"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
+                  <input
+                    type="password"
+                    [(ngModel)]="adminPassword"
+                    placeholder="••••••••"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                  />
+                </div>
+                <button
+                  (click)="loginAdmin()"
+                  class="w-full py-3 bg-gradient-to-r from-gray-900 to-black text-white rounded-xl font-bold hover:from-black hover:to-gray-900 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  Login
+                </button>
+                @if (loginError) {
+                  <p class="text-red-500 text-sm text-center">{{ loginError }}</p>
+                }
+              </div>
+            </div>
+          </div>
+        }
       </div>
     </footer>
   `
 })
-export class FooterComponent {}
+export class FooterComponent {
+  showAdminLogin = false;
+  adminEmail = '';
+  adminPassword = '';
+  loginError = '';
+
+  loginAdmin(): void {
+    if (this.adminEmail === 'admin@admin.com' && this.adminPassword === 'Moh@01102') {
+      this.loginError = '';
+      this.showAdminLogin = false;
+      alert('Admin login successful!');
+      // Store admin session
+      localStorage.setItem('isAdmin', 'true');
+    } else {
+      this.loginError = 'Invalid email or password';
+    }
+  }
+}
