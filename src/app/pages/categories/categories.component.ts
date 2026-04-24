@@ -92,7 +92,7 @@ export class CategoriesComponent implements OnInit {
       {
         name: 'Accessories',
         description: 'Stylish accessories and essentials',
-        image: 'https://images.unsplash.com/photo-1572569028738-411a8c98fd60?w=800&q=80'
+        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80'
       }
     ];
     this.loading = false;
