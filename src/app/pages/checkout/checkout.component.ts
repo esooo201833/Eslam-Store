@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -9,6 +9,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
 import { Cart } from '../../models/cart.model';
 import { LanguageService } from '../../services/language.service';
 import { ProductService } from '../../services/product.service';
+import { PayPalService } from '../../services/paypal.service';
 
 @Component({
   selector: 'app-checkout',
@@ -265,28 +266,37 @@ import { ProductService } from '../../services/product.service';
                     </div>
                   </label>
                 </div>
+
+                <!-- PayPal Button Container -->
+                @if (paymentMethod === 'paypal') {
+                  <div class="mt-6">
+                    <div id="paypal-button-container" class="min-h-[50px]"></div>
+                  </div>
+                }
               </div>
 
               <!-- Pay Button -->
-              <button
-                (click)="processPayment()"
-                [disabled]="processing || !customerName || !customerEmail || !paymentMethod"
-                class="w-full py-5 bg-gradient-to-r from-gray-900 to-black text-white rounded-2xl font-bold text-lg hover:from-black hover:to-gray-900 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3"
-              >
-                @if (!processing) {
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                  </svg>
-                  <span>{{ translate('checkout.pay') }} $ {{ (cart.total * 1.1).toFixed(2) }}</span>
-                }
-                @if (processing) {
-                  <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  <span>{{ translate('checkout.processing') }}</span>
-                }
-              </button>
+              @if (paymentMethod !== 'paypal') {
+                <button
+                  (click)="processPayment()"
+                  [disabled]="processing || !customerName || !customerEmail || !paymentMethod"
+                  class="w-full py-5 bg-gradient-to-r from-gray-900 to-black text-white rounded-2xl font-bold text-lg hover:from-black hover:to-gray-900 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3"
+                >
+                  @if (!processing) {
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    <span>{{ translate('checkout.pay') }} $ {{ (cart.total * 1.1).toFixed(2) }}</span>
+                  }
+                  @if (processing) {
+                    <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>{{ translate('checkout.processing') }}</span>
+                  }
+                </button>
+              }
 
               <!-- Security Note -->
               <div class="flex items-center justify-center gap-3 text-gray-400 text-sm bg-gray-50 py-4 rounded-2xl">
@@ -349,7 +359,7 @@ import { ProductService } from '../../services/product.service';
     </div>
   `
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, AfterContentChecked {
   cart: Cart = { items: [], total: 0 };
   customerName = '';
   customerEmail = '';
@@ -386,7 +396,8 @@ export class CheckoutComponent implements OnInit {
     private toastService: ToastService,
     private router: Router,
     private languageService: LanguageService,
-    private productService: ProductService
+    private productService: ProductService,
+    private paypalService: PayPalService
   ) {
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
@@ -398,6 +409,36 @@ export class CheckoutComponent implements OnInit {
     this.cartService.getCart().subscribe(cart => {
       this.cart = cart;
     });
+    this.loadPayPal();
+  }
+
+  async loadPayPal(): Promise<void> {
+    try {
+      await this.paypalService.loadPayPalScript();
+    } catch (error) {
+      console.error('Failed to load PayPal SDK:', error);
+    }
+  }
+
+  renderPayPalButton(): void {
+    if (this.paymentMethod === 'paypal' && this.cart.total > 0) {
+      const amount = this.cart.total * 1.1; // Including tax
+      this.paypalService.renderPayPalButton('paypal-button-container', amount, (details) => {
+        this.onPayPalSuccess(details);
+      });
+    }
+  }
+
+  onPayPalSuccess(details: any): void {
+    this.processing = true;
+    this.toastService.success('Payment successful!');
+    this.cartService.clearCart();
+    this.router.navigate(['/']);
+    this.processing = false;
+  }
+
+  ngAfterContentChecked(): void {
+    this.renderPayPalButton();
   }
 
   onCountryChange(): void {
