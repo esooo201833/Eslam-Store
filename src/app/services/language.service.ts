@@ -117,34 +117,39 @@ export class LanguageService {
       'about.readyToShopDesc': 'ابدأ رحلة التسوق الخاصة بك الآن واستمتع بأفضل العروض',
       'about.startShopping': 'ابدأ التسوق',
       
-      // Admin Employees
-      'admin.employeesTitle': 'إدارة الموظفين',
-      'admin.addEmployee': 'إضافة موظف',
-      'admin.name': 'الاسم',
-      'admin.email': 'البريد الإلكتروني',
-      'admin.password': 'كلمة المرور',
-      'admin.role': 'الدور',
-      'admin.permissions': 'الصلاحيات',
-      'admin.manageProducts': 'إدارة المنتجات',
-      'admin.manageCategories': 'إدارة الأقسام',
-      'admin.manageOrders': 'إدارة الطلبات',
-      'admin.manageSite': 'إدارة الموقع',
-      
-      // Admin Accounts
-      'admin.accountsTitle': 'حسابات الأدمن',
-      'admin.superAdmin': 'الأدمن الرئيسي',
-      'admin.fullAccess': 'صلاحيات كاملة',
-      
-      // General
-      'general.orEnterUrl': 'أو أدخل رابط الصورة',
-      'general.enter': 'أدخل',
-      'general.select': 'اختر',
-      'general.selectCategory': 'اختر القسم',
-      
       // Login
-      'login.title': 'تسجيل دخول الأدمن',
+      'login.title': 'تسجيل الدخول',
+      'login.subtitle': 'سجل دخولك للوصول إلى حسابك',
       'login.email': 'البريد الإلكتروني',
+      'login.emailPlaceholder': 'أدخل بريدك الإلكتروني',
       'login.password': 'كلمة المرور',
+      'login.passwordPlaceholder': 'أدخل كلمة المرور',
+      'login.rememberMe': 'تذكرني',
+      'login.signIn': 'تسجيل الدخول',
+      'login.noAccount': 'ليس لديك حساب؟',
+      'login.signUp': 'إنشاء حساب',
+      'login.invalidCredentials': 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+      
+      // Register
+      'register.title': 'إنشاء حساب جديد',
+      'register.subtitle': 'انضم إلينا واستمتع بتجربة تسوق ممتازة',
+      'register.name': 'الاسم',
+      'register.namePlaceholder': 'أدخل اسمك',
+      'register.email': 'البريد الإلكتروني',
+      'register.emailPlaceholder': 'أدخل بريدك الإلكتروني',
+      'register.password': 'كلمة المرور',
+      'register.passwordPlaceholder': 'أدخل كلمة المرور',
+      'register.confirmPassword': 'تأكيد كلمة المرور',
+      'register.confirmPasswordPlaceholder': 'أعد إدخال كلمة المرور',
+      'register.agreeTerms': 'أوافق على',
+      'register.termsOfService': 'الشروط والأحكام',
+      'register.createAccount': 'إنشاء حساب',
+      'register.hasAccount': 'لديك حساب بالفعل؟',
+      'register.signIn': 'تسجيل الدخول',
+      'register.passwordsNotMatch': 'كلمات المرور غير متطابقة',
+      'register.fillAllFields': 'يرجى ملء جميع الحقول',
+      
+      // Admin Employees
       'login.button': 'تسجيل الدخول',
       'login.invalid': 'البريد أو كلمة المرور غير صحيحة',
       'login.success': 'تم تسجيل الدخول بنجاح!',
@@ -348,34 +353,39 @@ export class LanguageService {
       'about.readyToShopDesc': 'Start your shopping journey now and enjoy the best offers',
       'about.startShopping': 'Start Shopping',
       
-      // Admin Employees
-      'admin.employeesTitle': 'Employees Management',
-      'admin.addEmployee': 'Add Employee',
-      'admin.name': 'Name',
-      'admin.email': 'Email',
-      'admin.password': 'Password',
-      'admin.role': 'Role',
-      'admin.permissions': 'Permissions',
-      'admin.manageProducts': 'Manage Products',
-      'admin.manageCategories': 'Manage Categories',
-      'admin.manageOrders': 'Manage Orders',
-      'admin.manageSite': 'Manage Site Settings',
-      
-      // Admin Accounts
-      'admin.accountsTitle': 'Admin Accounts',
-      'admin.superAdmin': 'Super Admin',
-      'admin.fullAccess': 'Full Access',
-      
-      // General
-      'general.orEnterUrl': 'Or enter image URL',
-      'general.enter': 'Enter',
-      'general.select': 'Select',
-      'general.selectCategory': 'Select category',
-      
       // Login
-      'login.title': 'Admin Login',
+      'login.title': 'Sign In',
+      'login.subtitle': 'Sign in to access your account',
       'login.email': 'Email',
+      'login.emailPlaceholder': 'Enter your email',
       'login.password': 'Password',
+      'login.passwordPlaceholder': 'Enter your password',
+      'login.rememberMe': 'Remember me',
+      'login.signIn': 'Sign In',
+      'login.noAccount': "Don't have an account?",
+      'login.signUp': 'Sign Up',
+      'login.invalidCredentials': 'Invalid email or password',
+      
+      // Register
+      'register.title': 'Create Account',
+      'register.subtitle': 'Join us and enjoy an excellent shopping experience',
+      'register.name': 'Name',
+      'register.namePlaceholder': 'Enter your name',
+      'register.email': 'Email',
+      'register.emailPlaceholder': 'Enter your email',
+      'register.password': 'Password',
+      'register.passwordPlaceholder': 'Enter your password',
+      'register.confirmPassword': 'Confirm Password',
+      'register.confirmPasswordPlaceholder': 'Re-enter your password',
+      'register.agreeTerms': 'I agree to the',
+      'register.termsOfService': 'Terms of Service',
+      'register.createAccount': 'Create Account',
+      'register.hasAccount': 'Already have an account?',
+      'register.signIn': 'Sign In',
+      'register.passwordsNotMatch': 'Passwords do not match',
+      'register.fillAllFields': 'Please fill all fields',
+      
+      // Admin Employees
       'login.button': 'Login',
       'login.invalid': 'Invalid email or password',
       'login.success': 'Admin login successful!',

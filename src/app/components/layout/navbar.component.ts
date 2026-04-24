@@ -146,6 +146,29 @@ import { inject } from '@angular/core';
                 </span>
               }
             </button>
+
+            <!-- User Login/Logout -->
+            @if (isLoggedIn) {
+              <button
+                (click)="logout()"
+                class="p-3 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all duration-300 transform hover:scale-110"
+                title="Logout"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                </svg>
+              </button>
+            } @else {
+              <button
+                routerLink="/login"
+                class="p-3 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all duration-300 transform hover:scale-110"
+                title="Login"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                </svg>
+              </button>
+            }
           </div>
         </div>
       </div>
@@ -199,6 +222,7 @@ export class NavbarComponent {
   wishlist: string[] = [];
   currentLang: 'ar' | 'en' = 'ar';
   isDarkMode = false;
+  isLoggedIn = false;
 
   constructor(
     private cartService: CartService,
@@ -208,6 +232,7 @@ export class NavbarComponent {
   ) {
     this.loadCartCount();
     this.loadWishlist();
+    this.checkLoginStatus();
     this.currentLang = this.languageService.getLanguage();
     this.languageService.currentLanguage$.subscribe(lang => {
       this.currentLang = lang;
@@ -216,6 +241,10 @@ export class NavbarComponent {
     this.themeService.isDarkMode$.subscribe(isDark => {
       this.isDarkMode = isDark;
     });
+  }
+
+  checkLoginStatus(): void {
+    this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   }
 
   loadCartCount(): void {
@@ -259,6 +288,13 @@ export class NavbarComponent {
   toggleLanguage(): void {
     const newLang = this.currentLang === 'ar' ? 'en' : 'ar';
     this.languageService.setLanguage(newLang);
+  }
+
+  logout(): void {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('user');
+    this.isLoggedIn = false;
+    this.router.navigate(['/home']);
   }
 
   toggleTheme(): void {
