@@ -35,25 +35,38 @@ import { FooterComponent } from '../../components/layout/footer.component';
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @for (category of categoryData; track category.name) {
               <div
-                class="relative h-80 rounded-2xl overflow-hidden cursor-pointer group animate-fade-in"
+                class="relative h-96 rounded-3xl overflow-hidden cursor-pointer group transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
                 (click)="goToCategory(category.name)"
               >
                 <img
                   [src]="category.image"
                   [alt]="category.name"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-6">
-                  <h2 class="text-3xl font-bold text-white mb-2">{{ category.name }}</h2>
-                  <p class="text-gray-200 mb-4">{{ category.description }}</p>
-                  <span class="inline-flex items-center text-white font-semibold group-hover:translate-x-2 transition-transform">
-                    Shop Now
-                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                    </svg>
-                  </span>
+                
+                <!-- Gradient Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+                
+                <!-- Content -->
+                <div class="absolute inset-0 flex flex-col justify-end p-8">
+                  <div class="transform transition-all duration-500 group-hover:translate-y-[-8px]">
+                    <h2 class="text-4xl font-bold text-white mb-3 tracking-tight">
+                      {{ category.name }}
+                    </h2>
+                    <p class="text-gray-200 text-lg mb-6 leading-relaxed">
+                      {{ category.description }}
+                    </p>
+                    <button class="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-bold rounded-2xl shadow-2xl hover:bg-gray-900 hover:text-white transition-all duration-300 transform hover:scale-105 group-hover:translate-x-2">
+                      Shop Now
+                      <svg class="w-6 h-6 ml-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
+                
+                <!-- Shine Effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
               </div>
             }
           </div>

@@ -55,88 +55,88 @@ import { Cart } from '../../models/cart.model';
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Checkout Form -->
-            <div class="space-y-6">
+            <div class="space-y-8">
               <!-- Customer Information -->
-              <div class="bg-white rounded-2xl shadow-lg p-6 animate-fade-in">
-                <div class="flex items-center gap-3 mb-6">
-                  <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center">
-                    <span class="text-white font-bold">1</span>
+              <div class="bg-white rounded-3xl shadow-xl p-8 transform transition-all duration-500 hover:shadow-2xl">
+                <div class="flex items-center gap-4 mb-8">
+                  <div class="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-700 rounded-2xl flex items-center justify-center shadow-lg">
+                    <span class="text-white font-bold text-lg">1</span>
                   </div>
-                  <h2 class="text-xl font-bold">Customer Information</h2>
+                  <h2 class="text-2xl font-bold text-gray-900">Customer Information</h2>
                 </div>
-                <div class="space-y-4">
+                <div class="space-y-6">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Full Name</label>
                     <input
                       type="text"
                       id="full-name"
                       name="full-name"
                       [(ngModel)]="customerName"
                       placeholder="John Doe"
-                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300"
                     />
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Email Address</label>
                     <input
                       id="customer-email"
                       name="customer-email"
                       [(ngModel)]="customerEmail"
                       type="email"
                       placeholder="john@example.com"
-                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                      class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-300 hover:border-gray-300"
                     />
                   </div>
                 </div>
               </div>
 
               <!-- Payment Method -->
-              <div class="bg-white rounded-2xl shadow-lg p-6 animate-fade-in">
-                <div class="flex items-center gap-3 mb-6">
-                  <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center">
-                    <span class="text-white font-bold">2</span>
+              <div class="bg-white rounded-3xl shadow-xl p-8 transform transition-all duration-500 hover:shadow-2xl">
+                <div class="flex items-center gap-4 mb-8">
+                  <div class="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-700 rounded-2xl flex items-center justify-center shadow-lg">
+                    <span class="text-white font-bold text-lg">2</span>
                   </div>
-                  <h2 class="text-xl font-bold">Payment Method</h2>
+                  <h2 class="text-2xl font-bold text-gray-900">Payment Method</h2>
                 </div>
                 <div class="space-y-4">
-                  <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-black transition-all [class.selected='border-black']">
+                  <label class="flex items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer hover:border-gray-900 transition-all duration-300 hover:shadow-lg group">
                     <input
                       type="radio"
                       id="payment-paypal"
                       name="paymentMethod"
                       value="paypal"
                       [(ngModel)]="paymentMethod"
-                      class="mr-4 w-5 h-5 text-black"
+                      class="mr-4 w-6 h-6 text-gray-900"
                     />
                     <div class="flex-1">
-                      <span class="font-semibold text-lg">PayPal</span>
-                      <p class="text-sm text-gray-500">Pay with your PayPal account</p>
+                      <span class="font-bold text-lg text-gray-900 group-hover:text-black transition-colors">PayPal</span>
+                      <p class="text-sm text-gray-500 mt-1">Pay with your PayPal account</p>
                     </div>
-                    <svg class="w-12 h-8" viewBox="0 0 24 24" fill="#003087">
+                    <svg class="w-14 h-9" viewBox="0 0 24 24" fill="#003087">
                       <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z"/>
                       <path d="M21.977 7.516c-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106h-3.642a.641.641 0 0 1-.633-.74L6.677 4.97c.082-.518.53-.9 1.054-.9h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287z"/>
                     </svg>
                   </label>
 
-                  <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-black transition-all">
+                  <label class="flex items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer hover:border-gray-900 transition-all duration-300 hover:shadow-lg group">
                     <input
                       type="radio"
                       id="payment-stripe"
                       name="paymentMethod"
                       value="stripe"
                       [(ngModel)]="paymentMethod"
-                      class="mr-4 w-5 h-5 text-black"
+                      class="mr-4 w-6 h-6 text-gray-900"
                     />
                     <div class="flex-1">
-                      <span class="font-semibold text-lg">Credit Card</span>
-                      <p class="text-sm text-gray-500">Pay with your credit card</p>
+                      <span class="font-bold text-lg text-gray-900 group-hover:text-black transition-colors">Credit Card</span>
+                      <p class="text-sm text-gray-500 mt-1">Pay with your credit card</p>
                     </div>
-                    <div class="flex gap-2">
-                      <svg class="w-8 h-5" viewBox="0 0 24 24" fill="#1A1F71">
+                    <div class="flex gap-3">
+                      <svg class="w-10 h-6" viewBox="0 0 24 24" fill="#1A1F71">
                         <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22c-5.523 0-10-4.477-10-10S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
                         <path d="M8 12h8v2H8v-2zm0-4h8v2H8V8z"/>
                       </svg>
-                      <svg class="w-8 h-5" viewBox="0 0 24 24" fill="#EB001B">
+                      <svg class="w-10 h-6" viewBox="0 0 24 24" fill="#EB001B">
                         <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22c-5.523 0-10-4.477-10-10S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
                         <path d="M8 12h8v2H8v-2zm0-4h8v2H8V8z"/>
                       </svg>
@@ -149,7 +149,7 @@ import { Cart } from '../../models/cart.model';
               <button
                 (click)="processPayment()"
                 [disabled]="processing || !customerName || !customerEmail || !paymentMethod"
-                class="w-full py-4 bg-gradient-to-r from-black to-gray-800 text-white rounded-xl font-semibold hover:from-gray-800 hover:to-black transition-all hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3"
+                class="w-full py-5 bg-gradient-to-r from-gray-900 to-black text-white rounded-2xl font-bold text-lg hover:from-black hover:to-gray-900 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3"
               >
                 @if (!processing) {
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,7 +167,7 @@ import { Cart } from '../../models/cart.model';
               </button>
 
               <!-- Security Note -->
-              <div class="flex items-center justify-center gap-4 text-gray-400 text-sm">
+              <div class="flex items-center justify-center gap-3 text-gray-400 text-sm bg-gray-50 py-4 rounded-2xl">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                 </svg>
@@ -177,41 +177,43 @@ import { Cart } from '../../models/cart.model';
 
             <!-- Order Summary -->
             <div>
-              <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24 animate-fade-in">
-                <h2 class="text-xl font-bold mb-6">Order Summary</h2>
-                <div class="space-y-4 mb-6">
+              <div class="bg-white rounded-3xl shadow-xl p-8 sticky top-24 transform transition-all duration-500 hover:shadow-2xl">
+                <h2 class="text-2xl font-bold mb-6 text-gray-900">Order Summary</h2>
+                <div class="space-y-5 mb-6">
                   @for (item of cart.items; track item.product.id) {
-                    <div class="flex gap-4 pb-4 border-b border-gray-100">
+                    <div class="flex gap-4 pb-5 border-b border-gray-100">
                       <img
                         [src]="item.product.image"
                         [alt]="item.product.name"
-                        class="w-16 h-16 object-cover rounded-lg"
+                        class="w-20 h-20 object-cover rounded-2xl transition-transform duration-300 hover:scale-105"
                       />
                       <div class="flex-1">
-                        <h3 class="font-medium text-sm">{{ item.product.name }}</h3>
-                        <p class="text-gray-500 text-xs">Qty: {{ item.quantity }}</p>
+                        <h3 class="font-bold text-sm text-gray-900">{{ item.product.name }}</h3>
+                        <p class="text-gray-500 text-xs mt-1">Qty: {{ item.quantity }}</p>
                       </div>
-                      <span class="font-semibold">\${{ (item.product.price * item.quantity).toFixed(2) }}</span>
+                      <span class="font-bold text-lg">\${{ (item.product.price * item.quantity).toFixed(2) }}</span>
                     </div>
                   }
                 </div>
-                <div class="space-y-3 border-t-2 border-gray-200 pt-4">
-                  <div class="flex justify-between">
+                <div class="space-y-4 border-t-2 border-gray-200 pt-6">
+                  <div class="flex justify-between items-center">
                     <span class="text-gray-600">Subtotal</span>
-                    <span class="font-semibold">\${{ cart.total.toFixed(2) }}</span>
+                    <span class="font-semibold text-lg">\${{ cart.total.toFixed(2) }}</span>
                   </div>
-                  <div class="flex justify-between">
+                  <div class="flex justify-between items-center">
                     <span class="text-gray-600">Shipping</span>
                     <span class="font-semibold text-green-600">Free</span>
                   </div>
-                  <div class="flex justify-between">
+                  <div class="flex justify-between items-center">
                     <span class="text-gray-600">Tax (10%)</span>
                     <span class="font-semibold">\${{ (cart.total * 0.1).toFixed(2) }}</span>
                   </div>
-                  <div class="border-t-2 border-gray-200 pt-4">
-                    <div class="flex justify-between">
-                      <span class="font-bold text-lg">Total</span>
-                      <span class="font-bold text-2xl text-black">\${{ (cart.total * 1.1).toFixed(2) }}</span>
+                  <div class="border-t-2 border-gray-200 pt-6">
+                    <div class="flex justify-between items-center">
+                      <span class="font-bold text-xl text-gray-900">Total</span>
+                      <span class="font-bold text-3xl bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                        \${{ (cart.total * 1.1).toFixed(2) }}
+                      </span>
                     </div>
                   </div>
                 </div>
