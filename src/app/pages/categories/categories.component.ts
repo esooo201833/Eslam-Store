@@ -11,15 +11,15 @@ import { FooterComponent } from '../../components/layout/footer.component';
   standalone: true,
   imports: [CommonModule, RouterModule, NavbarComponent, FooterComponent],
   template: `
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
       <!-- Navbar -->
       <app-navbar [showAdmin]="true"></app-navbar>
 
       <!-- Page Header -->
-      <section class="bg-gradient-to-r from-black to-gray-800 text-white py-16">
+      <section class="bg-gradient-to-r from-black to-gray-800 dark:from-gray-900 dark:to-gray-700 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 class="text-4xl md:text-5xl font-bold mb-4">Categories</h1>
-          <p class="text-xl text-gray-300">Browse our products by category</p>
+          <p class="text-xl text-gray-300 dark:text-gray-400">Browse our products by category</p>
         </div>
       </section>
 
@@ -27,19 +27,19 @@ import { FooterComponent } from '../../components/layout/footer.component';
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         @if (loading) {
           <div class="text-center py-20">
-            <div class="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-black"></div>
+            <div class="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-black dark:border-white"></div>
           </div>
         }
 
         @if (!loading) {
           <div class="relative min-h-screen">
             <!-- Background - Changed to a more noticeable gradient -->
-            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"></div>
+            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"></div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-reveal">
               @for (category of categoryData; track category.name) {
                 <div
-                  class="relative bg-white rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-3xl hover:-translate-y-3 border-2 border-indigo-100 hover:border-indigo-300"
+                  class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-3xl hover:-translate-y-3 border-2 border-indigo-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-gray-600"
                   (click)="goToCategory(category.name)"
                 >
                   <img
@@ -60,7 +60,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
                       <p class="text-gray-200 text-lg mb-6 leading-relaxed">
                         {{ category.description }}
                       </p>
-                      <button class="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-bold rounded-2xl shadow-2xl hover:bg-gray-900 hover:text-white transition-all duration-300 transform hover:scale-105 group-hover:translate-x-2">
+                      <button class="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-bold rounded-2xl shadow-2xl hover:bg-gray-900 dark:hover:bg-gray-700 hover:text-white dark:hover:text-white transition-all duration-300 transform hover:scale-105 group-hover:translate-x-2">
                         Shop Now
                         <svg class="w-6 h-6 ml-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>

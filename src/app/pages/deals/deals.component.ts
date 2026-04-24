@@ -13,7 +13,7 @@ import { LanguageService } from '../../services/language.service';
   standalone: true,
   imports: [CommonModule, RouterModule, NavbarComponent, FooterComponent],
   template: `
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
       <!-- Navbar -->
       <app-navbar [showAdmin]="true"></app-navbar>
 
@@ -29,7 +29,7 @@ import { LanguageService } from '../../services/language.service';
         </div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div class="max-w-2xl animate-fade-in-up">
-            <span class="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm text-white text-sm font-bold rounded-full mb-4">
+            <span class="inline-block px-4 py-2 bg-white/20 dark:bg-black/20 backdrop-blur-sm text-white text-sm font-bold rounded-full mb-4">
               🔥 {{ translate('deals.limitedOffer') }}
             </span>
             <h1 class="text-5xl md:text-6xl font-bold text-white mb-4">
@@ -40,7 +40,7 @@ import { LanguageService } from '../../services/language.service';
             </p>
             <button
               routerLink="/products"
-              class="px-8 py-4 bg-white text-red-600 rounded-xl font-bold hover:bg-gray-100 transition-all hover:shadow-xl hover:scale-105"
+              class="px-8 py-4 bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-xl font-bold hover:bg-gray-100 dark:hover:bg-gray-700 transition-all hover:shadow-xl hover:scale-105"
             >
               {{ translate('deals.shopAllDeals') }}
             </button>
@@ -50,18 +50,18 @@ import { LanguageService } from '../../services/language.service';
 
       <!-- Deal Products -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 class="text-3xl font-bold mb-8">{{ translate('deals.hotDeals') }}</h2>
+        <h2 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">{{ translate('deals.hotDeals') }}</h2>
         
         @if (loading) {
           <div class="text-center py-20">
-            <div class="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-black"></div>
+            <div class="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-black dark:border-white"></div>
           </div>
         }
 
         @if (!loading) {
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             @for (product of dealProducts; track product.id) {
-              <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden group cursor-pointer relative" (click)="goToProduct(product.id)">
+              <div class="product-card bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden group cursor-pointer relative" (click)="goToProduct(product.id)">
                 <div class="absolute top-4 left-4 z-10">
                   <span class="px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">
                     -{{ getDiscount(product) }}%
@@ -76,17 +76,17 @@ import { LanguageService } from '../../services/language.service';
                   <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <button
                       (click)="addToCart($event, product)"
-                      class="px-6 py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105"
+                      class="px-6 py-3 bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition-all transform hover:scale-105"
                     >
                       {{ translate('home.addToCart') }}
                     </button>
                   </div>
                 </div>
                 <div class="p-6">
-                  <h3 class="text-lg font-semibold mb-2 line-clamp-1">{{ product.name }}</h3>
+                  <h3 class="text-lg font-semibold mb-2 line-clamp-1 text-gray-900 dark:text-white">{{ product.name }}</h3>
                   <div class="flex items-center gap-2 mb-4">
-                    <span class="text-2xl font-bold text-red-600">$ {{ getSalePrice(product).toFixed(2) }}</span>
-                    <span class="text-lg text-gray-400 line-through">$ {{ getPrice(product).toFixed(2) }}</span>
+                    <span class="text-2xl font-bold text-red-600 dark:text-red-400">$ {{ getSalePrice(product).toFixed(2) }}</span>
+                    <span class="text-lg text-gray-400 dark:text-gray-500 line-through">$ {{ getPrice(product).toFixed(2) }}</span>
                   </div>
                   <button
                     (click)="addToCart($event, product)"
@@ -103,20 +103,20 @@ import { LanguageService } from '../../services/language.service';
 
       <!-- Countdown Timer -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="bg-gradient-to-r from-black to-gray-800 rounded-2xl p-8 text-center text-white">
+        <div class="bg-gradient-to-r from-black to-gray-800 dark:from-gray-900 dark:to-gray-700 rounded-2xl p-8 text-center text-white">
           <h2 class="text-2xl font-bold mb-4">⚡ {{ translate('deals.flashSaleEnds') }}</h2>
           <div class="flex justify-center gap-4">
-            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 min-w-[80px]">
+            <div class="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-4 min-w-[80px]">
               <span class="text-4xl font-bold">{{ hours }}</span>
-              <p class="text-sm text-gray-300">{{ translate('deals.hours') }}</p>
+              <p class="text-sm text-gray-300 dark:text-gray-400">{{ translate('deals.hours') }}</p>
             </div>
-            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 min-w-[80px]">
+            <div class="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-4 min-w-[80px]">
               <span class="text-4xl font-bold">{{ minutes }}</span>
-              <p class="text-sm text-gray-300">{{ translate('deals.minutes') }}</p>
+              <p class="text-sm text-gray-300 dark:text-gray-400">{{ translate('deals.minutes') }}</p>
             </div>
-            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 min-w-[80px]">
+            <div class="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-4 min-w-[80px]">
               <span class="text-4xl font-bold">{{ seconds }}</span>
-              <p class="text-sm text-gray-300">{{ translate('deals.seconds') }}</p>
+              <p class="text-sm text-gray-300 dark:text-gray-400">{{ translate('deals.seconds') }}</p>
             </div>
           </div>
         </div>
