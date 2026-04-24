@@ -6,6 +6,7 @@ import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/product.model';
 import { NavbarComponent } from '../../components/layout/navbar.component';
 import { FooterComponent } from '../../components/layout/footer.component';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-products',
@@ -19,8 +20,8 @@ import { FooterComponent } from '../../components/layout/footer.component';
       <!-- Page Header -->
       <section class="bg-gradient-to-r from-black to-gray-800 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 class="text-4xl md:text-5xl font-bold mb-4">All Products</h1>
-          <p class="text-xl text-gray-300">Discover our complete collection of premium products</p>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ translate('products.title') }}</h1>
+          <p class="text-xl text-gray-300">{{ translate('products.subtitle') }}</p>
         </div>
       </section>
 
@@ -36,7 +37,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
                 type="text"
                 id="products-search"
                 name="products-search"
-                placeholder="Search products..."
+                placeholder="{{ translate('home.searchPlaceholder') }}"
                 (input)="onSearch($event)"
                 class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
               />
@@ -47,10 +48,10 @@ import { FooterComponent } from '../../components/layout/footer.component';
               (change)="onCategoryChange($event)"
               class="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
             >
-              <option value="all">All Categories</option>
+              <option value="all">{{ translate('home.allCategories') }}</option>
               @for (category of categories; track category) {
                 <option [value]="category">
-                  {{ category }}
+                  {{ translateCategory(category) }}
                 </option>
               }
             </select>
@@ -60,10 +61,10 @@ import { FooterComponent } from '../../components/layout/footer.component';
               (change)="onSortChange($event)"
               class="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
             >
-              <option value="default">Sort by</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="name">Name</option>
+              <option value="default">{{ translate('products.sortBy') }}</option>
+              <option value="price-low">{{ translate('products.priceLow') }}</option>
+              <option value="price-high">{{ translate('products.priceHigh') }}</option>
+              <option value="name">{{ translate('products.name') }}</option>
             </select>
           </div>
         </div>
@@ -74,14 +75,14 @@ import { FooterComponent } from '../../components/layout/footer.component';
             (click)="filterByCategory('all')"
             class="px-6 py-2 rounded-full border-2 border-black bg-black text-white font-medium hover:bg-gray-800 transition-all"
           >
-            All
+            {{ translate('home.all') }}
           </button>
           @for (category of categories; track category) {
             <button
               (click)="filterByCategory(category)"
               class="px-6 py-2 rounded-full border-2 border-gray-200 text-gray-700 font-medium hover:border-black hover:text-black transition-all"
             >
-              {{ category }}
+              {{ translateCategory(category) }}
             </button>
           }
         </div>
@@ -90,7 +91,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
         @if (loading) {
           <div class="text-center py-20">
             <div class="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-black"></div>
-            <p class="mt-4 text-gray-600">Loading products...</p>
+            <p class="mt-4 text-gray-600">{{ translate('home.loading') }}</p>
           </div>
         }
 
@@ -119,7 +120,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
                     <!-- Category Badge -->
                     <div class="absolute top-4 left-4">
                       <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-xs font-bold text-gray-800 rounded-full shadow-lg uppercase tracking-wider">
-                        {{ product.category }}
+                        {{ translateCategory(product.category) }}
                       </span>
                     </div>
 
@@ -146,9 +147,9 @@ import { FooterComponent } from '../../components/layout/footer.component';
                     </p>
                     <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                       <div class="flex flex-col">
-                        <span class="text-xs text-gray-400 uppercase tracking-wider">Price</span>
+                        <span class="text-xs text-gray-400 uppercase tracking-wider">{{ translate('home.price') }}</span>
                         <span class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                          \${{ product.price.toFixed(2) }}
+                          $ {{ getPrice(product).toFixed(2) }}
                         </span>
                       </div>
                       <button
@@ -172,12 +173,12 @@ import { FooterComponent } from '../../components/layout/footer.component';
             <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <p class="text-gray-500 text-lg mb-4">No products found</p>
+            <p class="text-gray-500 text-lg mb-4">{{ translate('home.noProducts') }}</p>
             <button
               (click)="filterByCategory('all')"
               class="px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
             >
-              View All Products
+              {{ translate('home.viewAllProducts') }}
             </button>
           </div>
         }
@@ -208,12 +209,19 @@ export class ProductsComponent implements OnInit {
   loading = true;
   cartItemCount = 0;
   wishlist: string[] = [];
+  currentLang: 'ar' | 'en' = 'ar';
 
   constructor(
     private productService: ProductService,
     private cartService: CartService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private languageService: LanguageService
+  ) {
+    this.currentLang = this.languageService.getLanguage();
+    this.languageService.currentLanguage$.subscribe(lang => {
+      this.currentLang = lang;
+    });
+  }
 
   ngOnInit(): void {
     this.loadProducts();
@@ -322,7 +330,8 @@ export class ProductsComponent implements OnInit {
 
   addToCart(event: Event, product: Product): void {
     event.stopPropagation();
-    this.cartService.addToCart(product);
+    const price = this.getPrice(product);
+    this.cartService.addToCart(product, price);
     this.loadCartCount();
   }
 
@@ -341,5 +350,17 @@ export class ProductsComponent implements OnInit {
 
   isInWishlist(productId: string): boolean {
     return this.wishlist.includes(productId);
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
+  }
+
+  translateCategory(category: string): string {
+    return this.languageService.translate(`category.${category.toLowerCase()}`);
+  }
+
+  getPrice(product: Product): number {
+    return this.productService.getPriceByCountry(product);
   }
 }

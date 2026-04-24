@@ -143,7 +143,7 @@ import { interval, take } from 'rxjs';
               <option value="all">{{ translate('home.allCategories') }}</option>
               @for (category of categories; track category) {
                 <option [value]="category">
-                  {{ category }}
+                  {{ translateCategory(category) }}
                 </option>
               }
             </select>
@@ -163,7 +163,7 @@ import { interval, take } from 'rxjs';
               (click)="filterByCategory(category)"
               class="badge px-6 py-2 text-sm bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-500 transition-all"
             >
-              {{ category }}
+              {{ translateCategory(category) }}
             </button>
           }
         </div>
@@ -201,7 +201,7 @@ import { interval, take } from 'rxjs';
                     <!-- Category Badge -->
                     <div class="absolute top-4 left-4">
                       <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-xs font-bold text-gray-800 rounded-full shadow-lg uppercase tracking-wider">
-                        {{ product.category }}
+                        {{ translateCategory(product.category) }}
                       </span>
                     </div>
                     
@@ -461,6 +461,10 @@ export class HomeComponent implements OnInit {
 
   getPrice(product: Product): number {
     return this.productService.getPriceByCountry(product);
+  }
+
+  translateCategory(category: string): string {
+    return this.languageService.translate(`category.${category.toLowerCase()}`);
   }
 
   translate(key: string): string {

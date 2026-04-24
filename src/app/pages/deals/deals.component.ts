@@ -6,6 +6,7 @@ import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/product.model';
 import { NavbarComponent } from '../../components/layout/navbar.component';
 import { FooterComponent } from '../../components/layout/footer.component';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-deals',
@@ -29,19 +30,19 @@ import { FooterComponent } from '../../components/layout/footer.component';
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div class="max-w-2xl animate-fade-in-up">
             <span class="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm text-white text-sm font-bold rounded-full mb-4">
-              🔥 LIMITED TIME OFFER
+              🔥 {{ translate('deals.limitedOffer') }}
             </span>
             <h1 class="text-5xl md:text-6xl font-bold text-white mb-4">
-              Up to 50% OFF
+              {{ translate('deals.upToDiscount') }}
             </h1>
             <p class="text-xl text-white/90 mb-8">
-              Don't miss out on our biggest sale of the year!
+              {{ translate('deals.subtitle') }}
             </p>
             <button
               routerLink="/products"
               class="px-8 py-4 bg-white text-red-600 rounded-xl font-bold hover:bg-gray-100 transition-all hover:shadow-xl hover:scale-105"
             >
-              Shop All Deals
+              {{ translate('deals.shopAllDeals') }}
             </button>
           </div>
         </div>
@@ -49,7 +50,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
 
       <!-- Deal Products -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 class="text-3xl font-bold mb-8">Hot Deals</h2>
+        <h2 class="text-3xl font-bold mb-8">{{ translate('deals.hotDeals') }}</h2>
         
         @if (loading) {
           <div class="text-center py-20">
@@ -77,21 +78,21 @@ import { FooterComponent } from '../../components/layout/footer.component';
                       (click)="addToCart($event, product)"
                       class="px-6 py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105"
                     >
-                      Add to Cart
+                      {{ translate('home.addToCart') }}
                     </button>
                   </div>
                 </div>
                 <div class="p-6">
                   <h3 class="text-lg font-semibold mb-2 line-clamp-1">{{ product.name }}</h3>
                   <div class="flex items-center gap-2 mb-4">
-                    <span class="text-2xl font-bold text-red-600">\${{ getSalePrice(product).toFixed(2) }}</span>
-                    <span class="text-lg text-gray-400 line-through">\${{ product.price.toFixed(2) }}</span>
+                    <span class="text-2xl font-bold text-red-600">$ {{ getSalePrice(product).toFixed(2) }}</span>
+                    <span class="text-lg text-gray-400 line-through">$ {{ getPrice(product).toFixed(2) }}</span>
                   </div>
                   <button
                     (click)="addToCart($event, product)"
                     class="w-full py-3 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg font-semibold hover:from-red-600 hover:to-pink-600 transition-all"
                   >
-                    Add to Cart
+                    {{ translate('home.addToCart') }}
                   </button>
                 </div>
               </div>
@@ -103,19 +104,19 @@ import { FooterComponent } from '../../components/layout/footer.component';
       <!-- Countdown Timer -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="bg-gradient-to-r from-black to-gray-800 rounded-2xl p-8 text-center text-white">
-          <h2 class="text-2xl font-bold mb-4">⚡ Flash Sale Ends In</h2>
+          <h2 class="text-2xl font-bold mb-4">⚡ {{ translate('deals.flashSaleEnds') }}</h2>
           <div class="flex justify-center gap-4">
             <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 min-w-[80px]">
               <span class="text-4xl font-bold">{{ hours }}</span>
-              <p class="text-sm text-gray-300">Hours</p>
+              <p class="text-sm text-gray-300">{{ translate('deals.hours') }}</p>
             </div>
             <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 min-w-[80px]">
               <span class="text-4xl font-bold">{{ minutes }}</span>
-              <p class="text-sm text-gray-300">Minutes</p>
+              <p class="text-sm text-gray-300">{{ translate('deals.minutes') }}</p>
             </div>
             <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 min-w-[80px]">
               <span class="text-4xl font-bold">{{ seconds }}</span>
-              <p class="text-sm text-gray-300">Seconds</p>
+              <p class="text-sm text-gray-300">{{ translate('deals.seconds') }}</p>
             </div>
           </div>
         </div>
@@ -140,12 +141,19 @@ export class DealsComponent implements OnInit {
   minutes = 0;
   seconds = 0;
   private countdownInterval: any;
+  currentLang: 'ar' | 'en' = 'ar';
 
   constructor(
     private productService: ProductService,
     private cartService: CartService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private languageService: LanguageService
+  ) {
+    this.currentLang = this.languageService.getLanguage();
+    this.languageService.currentLanguage$.subscribe(lang => {
+      this.currentLang = lang;
+    });
+  }
 
   ngOnInit(): void {
     this.loadDealProducts();
@@ -180,7 +188,7 @@ export class DealsComponent implements OnInit {
   }
 
   getSalePrice(product: Product): number {
-    return product.price * 0.7;
+    return this.getPrice(product) * 0.7;
   }
 
   goToProduct(id: string): void {
@@ -189,7 +197,8 @@ export class DealsComponent implements OnInit {
 
   addToCart(event: Event, product: Product): void {
     event.stopPropagation();
-    this.cartService.addToCart(product);
+    const price = this.getSalePrice(product);
+    this.cartService.addToCart(product, price);
   }
 
   startCountdown(): void {
@@ -213,5 +222,13 @@ export class DealsComponent implements OnInit {
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
     }
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
+  }
+
+  getPrice(product: Product): number {
+    return this.productService.getPriceByCountry(product);
   }
 }

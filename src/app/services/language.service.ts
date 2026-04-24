@@ -115,20 +115,45 @@ export class LanguageService {
       'login.invalid': 'البريد أو كلمة المرور غير صحيحة',
       'login.success': 'تم تسجيل الدخول بنجاح!',
       
+      // Categories
+      'category.electronics': 'الإلكترونيات',
+      'category.clothing': 'الملابس',
+      'category.accessories': 'الإكسسوارات',
+      
       // Home
-      'home.newCollection': 'مجموعة جديدة 2024',
-      'home.heroTitle': 'اكتشف التسوق',
-      'home.heroSubtitle': 'اكتشف أرقى مجموعة من المنتجات المميزة التي تم اختيارها بعناية للمتسوق المميز. من الإلكترونيات المتطورة إلى الأزيار الخالدة، اكتشف التميز في كل تفصيل.',
+      'home.newCollection': 'مجموعة جديدة',
+      'home.heroTitle': 'اكتشف',
+      'home.heroSubtitle': 'تسوق أحدث المنتجات بأفضل الأسعار. توصيل سريع إلى جميع أنحاء العالم.',
       'home.shopNow': 'تسوق الآن',
       'home.viewDeals': 'عرض العروض',
-      'home.searchPlaceholder': 'ابحث عن المنتجات...',
+      'home.searchPlaceholder': 'ابحث عن منتجات...',
       'home.allCategories': 'جميع الأقسام',
       'home.all': 'الكل',
-      'home.loading': 'جاري تحميل المنتجات...',
+      'home.loading': 'جاري التحميل...',
       'home.noProducts': 'لم يتم العثور على منتجات',
-      'home.viewAllProducts': 'عرض جميع المنتجات',
       'home.addToCart': 'أضف للسلة',
+      'home.addedToCart': 'تمت الإضافة للسلة',
       'home.price': 'السعر',
+      'home.viewAllProducts': 'عرض جميع المنتجات',
+
+      // Products
+      'products.title': 'جميع المنتجات',
+      'products.subtitle': 'اكتشف مجموعتنا الكاملة من المنتجات المميزة',
+      'products.sortBy': 'ترتيب حسب',
+      'products.priceLow': 'السعر: من الأقل للأعلى',
+      'products.priceHigh': 'السعر: من الأعلى للأقل',
+      'products.name': 'الاسم',
+
+      // Deals
+      'deals.limitedOffer': 'عرض محدود',
+      'deals.upToDiscount': 'خصم يصل إلى 50%',
+      'deals.subtitle': 'لا تفوت أكبر بيع لدينا هذا العام!',
+      'deals.shopAllDeals': 'تسوق جميع العروض',
+      'deals.hotDeals': 'عروض ساخنة',
+      'deals.flashSaleEnds': 'ينتهي البيع السريع خلال',
+      'deals.hours': 'ساعات',
+      'deals.minutes': 'دقائق',
+      'deals.seconds': 'ثواني',
       
       // Cart
       'cart.title': 'سلة التسوق',
@@ -287,6 +312,11 @@ export class LanguageService {
       'login.invalid': 'Invalid email or password',
       'login.success': 'Admin login successful!',
       
+      // Categories
+      'category.electronics': 'Electronics',
+      'category.clothing': 'Clothing',
+      'category.accessories': 'Accessories',
+      
       // Home
       'home.newCollection': 'New Collection 2024',
       'home.heroTitle': 'Discover Luxury',
@@ -301,6 +331,25 @@ export class LanguageService {
       'home.viewAllProducts': 'View All Products',
       'home.addToCart': 'Add to Cart',
       'home.price': 'Price',
+
+      // Products
+      'products.title': 'All Products',
+      'products.subtitle': 'Discover our complete collection of premium products',
+      'products.sortBy': 'Sort by',
+      'products.priceLow': 'Price: Low to High',
+      'products.priceHigh': 'Price: High to Low',
+      'products.name': 'Name',
+
+      // Deals
+      'deals.limitedOffer': 'LIMITED TIME OFFER',
+      'deals.upToDiscount': 'Up to 50% OFF',
+      'deals.subtitle': "Don't miss out on our biggest sale of the year!",
+      'deals.shopAllDeals': 'Shop All Deals',
+      'deals.hotDeals': 'Hot Deals',
+      'deals.flashSaleEnds': 'Flash Sale Ends In',
+      'deals.hours': 'Hours',
+      'deals.minutes': 'Minutes',
+      'deals.seconds': 'Seconds',
       
       // Cart
       'cart.title': 'Shopping Cart',
