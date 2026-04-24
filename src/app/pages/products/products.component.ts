@@ -102,7 +102,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 scroll-reveal">
               @for (product of filteredProducts; track product.id) {
                 <div
-                  class="relative bg-white rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-3xl hover:-translate-y-3 border-2 border-indigo-100"
+                  class="relative bg-white rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-3xl hover:-translate-y-3 border-2 border-indigo-100 hover:border-indigo-300"
                   (click)="goToProduct(product.id)"
                 >
                   <!-- Image Container -->

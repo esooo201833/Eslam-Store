@@ -39,7 +39,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-reveal">
               @for (category of categoryData; track category.name) {
                 <div
-                  class="relative bg-white rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-3xl hover:-translate-y-3 border-2 border-indigo-100"
+                  class="relative bg-white rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:shadow-3xl hover:-translate-y-3 border-2 border-indigo-100 hover:border-indigo-300"
                   (click)="goToCategory(category.name)"
                 >
                   <img
