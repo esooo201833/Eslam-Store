@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { FooterComponent } from '../../components/layout/footer.component';
+import { LanguageService } from '../../services/language.service';
 
 interface SiteSettings {
   siteName: string;
@@ -34,15 +35,24 @@ interface SiteSettings {
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
               </svg>
-              Back to Store
+              {{ translate('admin.back') }}
             </button>
             <h1 class="text-2xl font-bold">Admin Panel</h1>
-            <button
-              (click)="logout()"
-              class="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-all"
-            >
-              Logout
-            </button>
+            <div class="flex items-center gap-3">
+              <button
+                (click)="toggleLanguage()"
+                class="p-3 text-gray-600 hover:text-black hover:bg-gray-100 rounded-xl transition-all duration-300 transform hover:scale-110"
+                title="Change Language"
+              >
+                <span class="font-bold text-lg">{{ currentLang === 'ar' ? 'EN' : 'ع' }}</span>
+              </button>
+              <button
+                (click)="logout()"
+                class="px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-all hover:shadow-lg"
+              >
+                {{ translate('admin.logout') }}
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -58,7 +68,7 @@ interface SiteSettings {
             [class.hover:bg-gray-100]="activeTab !== 'dashboard'"
             class="flex-1 px-6 py-3 rounded-xl font-medium transition-all"
           >
-            Dashboard
+            {{ translate('admin.dashboard') }}
           </button>
           @if (isSuperAdmin) {
             <button
@@ -69,7 +79,7 @@ interface SiteSettings {
               [class.hover:bg-gray-100]="activeTab !== 'employees'"
               class="flex-1 px-6 py-3 rounded-xl font-medium transition-all"
             >
-              Employees
+              {{ translate('admin.employees') }}
             </button>
           }
           <button
@@ -80,7 +90,7 @@ interface SiteSettings {
             [class.hover:bg-gray-100]="activeTab !== 'site'"
             class="flex-1 px-6 py-3 rounded-xl font-medium transition-all"
           >
-            Site Management
+            {{ translate('admin.site') }}
           </button>
           <button
             (click)="activeTab = 'products'"
@@ -90,7 +100,7 @@ interface SiteSettings {
             [class.hover:bg-gray-100]="activeTab !== 'products'"
             class="flex-1 px-6 py-3 rounded-xl font-medium transition-all"
           >
-            Products & Categories
+            {{ translate('admin.products') }}
           </button>
           @if (isSuperAdmin) {
             <button
@@ -101,7 +111,7 @@ interface SiteSettings {
               [class.hover:bg-gray-100]="activeTab !== 'accounts'"
               class="flex-1 px-6 py-3 rounded-xl font-medium transition-all"
             >
-              Accounts
+              {{ translate('admin.accounts') }}
             </button>
           }
         </div>
@@ -110,16 +120,16 @@ interface SiteSettings {
         @if (activeTab === 'dashboard') {
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white rounded-2xl shadow-lg p-6 transform transition-all hover:shadow-xl">
-              <p class="text-gray-600 text-sm">Total Products</p>
+              <p class="text-gray-600 text-sm">{{ translate('admin.totalProducts') }}</p>
               <p class="text-3xl font-bold">{{ products.length }}</p>
             </div>
             <div class="bg-white rounded-2xl shadow-lg p-6 transform transition-all hover:shadow-xl">
-              <p class="text-gray-600 text-sm">Total Orders</p>
+              <p class="text-gray-600 text-sm">{{ translate('admin.totalOrders') }}</p>
               <p class="text-3xl font-bold">{{ orders.length }}</p>
             </div>
             <div class="bg-white rounded-2xl shadow-lg p-6 transform transition-all hover:shadow-xl">
-              <p class="text-gray-600 text-sm">Total Revenue</p>
-              <p class="text-3xl font-bold">\${{ totalRevenue.toFixed(2) }}</p>
+              <p class="text-gray-600 text-sm">{{ translate('admin.totalRevenue') }}</p>
+              <p class="text-3xl font-bold">$ {{ totalRevenue.toFixed(2) }}</p>
             </div>
           </div>
 
@@ -228,19 +238,19 @@ interface SiteSettings {
         @if (activeTab === 'site') {
           <div class="space-y-6">
             <div class="bg-white rounded-2xl shadow-lg p-6">
-              <h2 class="text-xl font-bold mb-6">Site Information</h2>
+              <h2 class="text-xl font-bold mb-6">{{ translate('admin.siteInfo') }}</h2>
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-2">Site Name</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.siteName') }}</label>
                   <input
                     type="text"
                     [(ngModel)]="siteSettings.siteName"
-                    placeholder="Enter site name"
+                    placeholder="{{ translate('general.enter') }} {{ translate('admin.siteName') }}"
                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-2">Site Logo</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.siteLogo') }}</label>
                   <div class="space-y-3">
                     <input
                       type="file"
@@ -251,7 +261,7 @@ interface SiteSettings {
                     <input
                       type="text"
                       [(ngModel)]="siteSettings.siteLogo"
-                      placeholder="Or enter logo URL"
+                      placeholder="{{ translate('general.orEnterUrl') }}"
                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                     />
                     @if (siteSettings.siteLogo) {
@@ -263,34 +273,34 @@ interface SiteSettings {
                   (click)="saveSiteSettings()"
                   class="px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg"
                 >
-                  Save Changes
+                  {{ translate('admin.saveChanges') }}
                 </button>
               </div>
             </div>
 
             <div class="bg-white rounded-2xl shadow-lg p-6">
-              <h2 class="text-xl font-bold mb-6">Promo Banner</h2>
+              <h2 class="text-xl font-bold mb-6">{{ translate('admin.promoBanner') }}</h2>
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-2">Banner Text</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.bannerText') }}</label>
                   <input
                     type="text"
                     [(ngModel)]="siteSettings.promoText"
-                    placeholder="Enter promo text"
+                    placeholder="{{ translate('general.enter') }} {{ translate('admin.bannerText') }}"
                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-2">Banner Link</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.bannerLink') }}</label>
                   <input
                     type="text"
                     [(ngModel)]="siteSettings.promoLink"
-                    placeholder="Enter promo link"
+                    placeholder="{{ translate('general.enter') }} {{ translate('admin.bannerLink') }}"
                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-2">Banner Image</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.bannerImage') }}</label>
                   <div class="space-y-3">
                     <input
                       type="file"
@@ -301,7 +311,7 @@ interface SiteSettings {
                     <input
                       type="text"
                       [(ngModel)]="siteSettings.promoImage"
-                      placeholder="Or enter image URL"
+                      placeholder="{{ translate('general.orEnterUrl') }}"
                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                     />
                     @if (siteSettings.promoImage) {
@@ -313,16 +323,16 @@ interface SiteSettings {
                   (click)="saveSiteSettings()"
                   class="px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg"
                 >
-                  Save Changes
+                  {{ translate('admin.saveChanges') }}
                 </button>
               </div>
             </div>
 
             <div class="bg-white rounded-2xl shadow-lg p-6">
-              <h2 class="text-xl font-bold mb-6">Background Images</h2>
+              <h2 class="text-xl font-bold mb-6">{{ translate('admin.backgroundImages') }}</h2>
               <div class="space-y-6">
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-2">Home Background Image</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.homeBackground') }}</label>
                   <div class="space-y-3">
                     <input
                       type="file"
@@ -333,7 +343,7 @@ interface SiteSettings {
                     <input
                       type="text"
                       [(ngModel)]="siteSettings.homeBackground"
-                      placeholder="Or enter image URL"
+                      placeholder="{{ translate('general.orEnterUrl') }}"
                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                     />
                     @if (siteSettings.homeBackground) {
@@ -342,7 +352,7 @@ interface SiteSettings {
                   </div>
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-2">Category Background Image</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">{{ translate('admin.categoryBackground') }}</label>
                   <div class="space-y-3">
                     <input
                       type="file"
@@ -353,7 +363,7 @@ interface SiteSettings {
                     <input
                       type="text"
                       [(ngModel)]="siteSettings.categoryBackground"
-                      placeholder="Or enter image URL"
+                      placeholder="{{ translate('general.orEnterUrl') }}"
                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                     />
                     @if (siteSettings.categoryBackground) {
@@ -365,7 +375,7 @@ interface SiteSettings {
                   (click)="saveSiteSettings()"
                   class="px-6 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg"
                 >
-                  Save Changes
+                  {{ translate('admin.saveChanges') }}
                 </button>
               </div>
             </div>
@@ -775,11 +785,18 @@ export class AdminComponent implements OnInit {
   // Permissions
   isSuperAdmin = false;
   currentAdminEmail = '';
+  currentLang: 'ar' | 'en' = 'ar';
 
   constructor(
     private productService: ProductService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private languageService: LanguageService
+  ) {
+    this.currentLang = this.languageService.getLanguage();
+    this.languageService.currentLanguage$.subscribe(lang => {
+      this.currentLang = lang;
+    });
+  }
 
   ngOnInit(): void {
     this.checkAdminAccess();
@@ -874,6 +891,15 @@ export class AdminComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
+  }
+
+  toggleLanguage(): void {
+    const newLang = this.currentLang === 'ar' ? 'en' : 'ar';
+    this.languageService.setLanguage(newLang);
   }
 
   // Employee management methods

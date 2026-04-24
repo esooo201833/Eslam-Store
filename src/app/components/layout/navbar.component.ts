@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { NgOptimizedImage } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-navbar',
@@ -92,6 +93,15 @@ import { NgOptimizedImage } from '@angular/common';
               }
             </button>
 
+            <!-- Language Switcher -->
+            <button
+              (click)="toggleLanguage()"
+              class="p-3 text-gray-600 hover:text-black hover:bg-gray-100 rounded-xl transition-all duration-300 transform hover:scale-110"
+              title="Change Language"
+            >
+              <span class="font-bold text-lg">{{ currentLang === 'ar' ? 'EN' : 'ع' }}</span>
+            </button>
+
             <!-- Cart -->
             <button
               routerLink="/cart"
@@ -158,13 +168,19 @@ export class NavbarComponent {
   isSearchOpen = false;
   searchQuery = '';
   wishlist: string[] = [];
+  currentLang: 'ar' | 'en' = 'ar';
 
   constructor(
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    private languageService: LanguageService
   ) {
     this.loadCartCount();
     this.loadWishlist();
+    this.currentLang = this.languageService.getLanguage();
+    this.languageService.currentLanguage$.subscribe(lang => {
+      this.currentLang = lang;
+    });
   }
 
   loadCartCount(): void {
@@ -203,5 +219,10 @@ export class NavbarComponent {
   toggleWishlist(): void {
     // Navigate to products page with wishlist filter
     this.router.navigate(['/products'], { queryParams: { wishlist: 'true' } });
+  }
+
+  toggleLanguage(): void {
+    const newLang = this.currentLang === 'ar' ? 'en' : 'ar';
+    this.languageService.setLanguage(newLang);
   }
 }
