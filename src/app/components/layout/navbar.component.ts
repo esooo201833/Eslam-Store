@@ -21,7 +21,7 @@ import { NgOptimizedImage } from '@angular/common';
                 width="48"
                 height="48"
                 alt="Eslam Store Logo"
-                class="w-12 h-12 object-contain"
+                class="w-12 h-12 object-contain mix-blend-multiply"
               />
               <h1 class="text-xl font-bold text-gradient">Eslam Store</h1>
             </div>
