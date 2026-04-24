@@ -170,9 +170,9 @@ export class AboutComponent implements OnInit {
     rating: 0
   };
   testimonials = [
-    { id: 1, name: 'Ahmed Mohamed', text: 'Excellent products and fast delivery. Highly recommended!' },
-    { id: 2, name: 'Sara Ali', text: 'Best online shopping experience I have ever had. Will definitely come back!' },
-    { id: 3, name: 'Omar Hassan', text: 'Great quality products at amazing prices. Customer service is outstanding!' }
+    { id: 1, name: 'أحمد محمد', text: 'منتجات ممتازة وتوصيل سريع جداً. أنصح بالشراء من هذا المتجر!' },
+    { id: 2, name: 'سارة علي', text: 'أفضل تجربة تسوق أونلاين مررت بها. سأعود بالتأكيد!' },
+    { id: 3, name: 'عمر حسن', text: 'منتجات عالية الجودة بأسعار مذهلة. خدمة العملاء ممتازة!' }
   ];
   currentLang: 'ar' | 'en' = 'ar';
 
