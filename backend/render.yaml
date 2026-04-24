@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: eslam-store-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 7d
+      - key: FRONTEND_URL
+        value: https://eslam-store.vercel.app
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        value: Eslam Store <noreply@eslamstore.com>
+      - key: OTP_EXPIRY_MINUTES
+        value: 5
+      - key: CORS_FRONTEND_URL
+        value: https://eslam-store.vercel.app
+
+databases:
+  - name: eslam-store-db
+    databaseName: eslam_store
+    user: postgres
