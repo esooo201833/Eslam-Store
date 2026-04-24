@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NgOptimizedImage],
   template: `
     <!-- Modern Footer -->
     <footer class="mt-12 bg-white border-t border-gray-200">
@@ -14,6 +15,13 @@ import { RouterModule } from '@angular/router';
           <!-- Brand -->
           <div class="lg:col-span-1">
             <div class="flex items-center gap-3 mb-4">
+              <img
+                ngSrc="/logo%20(2).png"
+                width="48"
+                height="48"
+                alt="Eslam Store Logo"
+                class="w-12 h-12 object-contain"
+              />
               <span class="text-xl font-bold text-gradient">Eslam Store</span>
             </div>
             <p class="text-gray-600 text-sm mb-4">
