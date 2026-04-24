@@ -9,6 +9,7 @@ import { FooterComponent } from '../../components/layout/footer.component';
 interface SiteSettings {
   promoText: string;
   promoLink: string;
+  promoImage: string;
   homeBackground: string;
   categoryBackground: string;
   [key: string]: string;
@@ -244,6 +245,26 @@ interface SiteSettings {
                     placeholder="Enter promo link"
                     class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                   />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Banner Image</label>
+                  <div class="space-y-3">
+                    <input
+                      type="file"
+                      (change)="onFileSelected($event, 'promoImage')"
+                      accept="image/*"
+                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                    <input
+                      type="text"
+                      [(ngModel)]="siteSettings.promoImage"
+                      placeholder="Or enter image URL"
+                      class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                    />
+                    @if (siteSettings.promoImage) {
+                      <img [src]="siteSettings.promoImage" class="w-full h-48 object-cover rounded-xl" />
+                    }
+                  </div>
                 </div>
                 <button
                   (click)="saveSiteSettings()"
@@ -696,6 +717,7 @@ export class AdminComponent implements OnInit {
   siteSettings: SiteSettings = {
     promoText: '',
     promoLink: '',
+    promoImage: '',
     homeBackground: '',
     categoryBackground: ''
   };
