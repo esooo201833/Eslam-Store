@@ -20,7 +20,7 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:4200',
   'https://eslam-store.vercel.app',
-  'https://poor-heads-heal.loca.lt',
+  'https://sermon-explode-rockfish.ngrok-free.dev',
   // Add your Fly.io URL here: 'https://eslam-store-backend.fly.dev'
 ];
 

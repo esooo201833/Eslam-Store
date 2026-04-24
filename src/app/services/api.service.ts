@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'https://poor-heads-heal.loca.lt/api';
+  private apiUrl = 'https://sermon-explode-rockfish.ngrok-free.dev/api';
 
   constructor(private http: HttpClient) {}
 
