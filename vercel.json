@@ -8,6 +8,18 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/backend/api/index.js"
+    },
+    {
+      "src": "/health",
+      "dest": "/backend/api/health.js"
+    },
+    {
+      "src": "/db-test",
+      "dest": "/backend/api/db-test.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/dist/shopify-store/browser/$1"
     },
