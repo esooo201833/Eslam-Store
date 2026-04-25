@@ -16,6 +16,14 @@ app.get('/', (req, res) => {
   res.json({ message: 'Eslam Store API', health: '/api/health' });
 });
 
+// Favicon - return 204 to prevent timeout
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
+app.get('/favicon.png', (req, res) => {
+  res.status(204).end();
+});
+
 // Security Middleware - disable in serverless to prevent issues
 if (!process.env.VERCEL && !process.env.AWS_LAMBDA_FUNCTION_VERSION) {
   app.use(helmet({
