@@ -6,14 +6,19 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Health Check FIRST - before any middleware
+// Health Check FIRST - before any middleware or routes
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Server is running' });
+});
+
+// Also support /api/health for compatibility
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ message: 'Eslam Store API', health: '/api/health' });
+  res.json({ message: 'Eslam Store API', health: '/health' });
 });
 
 // Favicon - return 204 to prevent timeout
@@ -69,7 +74,7 @@ if (!process.env.VERCEL && !process.env.AWS_LAMBDA_FUNCTION_VERSION) {
   app.use('/api/', apiLimiter);
 }
 
-// Routes
+// Routes - load AFTER health check
 const authRoutes = require('./src/routes/auth');
 const productRoutes = require('./src/routes/products');
 const cartRoutes = require('./src/routes/cart');
