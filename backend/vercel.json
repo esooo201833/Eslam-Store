@@ -25,10 +25,5 @@
       "source": "/(.*)",
       "destination": "/api/index.js"
     }
-  ],
-  "experimentalServices": {
-    "app": {
-      "routePrefix": "/"
-    }
-  }
+  ]
 }
