@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// Use DATABASE_URL from Render or fallback to individual env vars
+// Use DATABASE_URL from Render/Supabase or fallback to individual env vars
 const connectionString = process.env.DATABASE_URL || 
   `postgresql://${process.env.DB_USER || 'postgres'}:${process.env.DB_PASSWORD}@${process.env.DB_HOST || 'localhost'}:${process.env.DB_PORT || 5432}/${process.env.DB_NAME || 'eslam_store'}`;
 
@@ -10,11 +10,15 @@ let pool = null;
 // Lazy initialization - create pool only when first query is made
 function getPool() {
   if (!pool) {
+    // Check if using Supabase (DATABASE_URL contains supabase)
+    const isSupabase = connectionString.includes('supabase');
+    
     pool = new Pool({
       connectionString,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-      connectionTimeoutMillis: 10000, // 10 second timeout
+      ssl: isSupabase ? { rejectUnauthorized: false } : (process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false),
+      connectionTimeoutMillis: 15000, // 15 second timeout
       idleTimeoutMillis: 30000, // 30 second idle timeout
+      max: isSupabase ? 3 : 10, // Limit connections for serverless
     });
 
     // Test database connection

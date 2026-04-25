@@ -94,8 +94,9 @@ app.use((req, res) => {
 
 // Error Handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
+  console.error('Error:', err);
+  console.error('Stack:', err.stack);
+  res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
 
 // Start Server (only for local development)
