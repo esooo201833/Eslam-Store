@@ -1,0 +1,16 @@
+# robots.txt for Eslam Store
+# https://eslamstore.com/
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin
+Disallow: /api
+Disallow: /private
+
+# Sitemap
+Sitemap: https://eslamstore.com/sitemap.xml
+
+# Crawl-delay (optional, to prevent overloading)
+Crawl-delay: 1

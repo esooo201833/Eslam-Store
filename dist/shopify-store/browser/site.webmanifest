@@ -1,0 +1,34 @@
+{
+  "name": "Eslam Store - Premium E-Commerce",
+  "short_name": "Eslam Store",
+  "description": "Your premium destination for luxury electronics, fashion, and accessories",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "any",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "e-commerce", "fashion", "electronics"],
+  "lang": "en",
+  "dir": "ltr"
+}
