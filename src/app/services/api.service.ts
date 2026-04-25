@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'https://sermon-explode-rockfish.ngrok-free.dev/api';
+  private apiUrl = 'https://eslam-store-backend.vercel.app/api';
 
   constructor(private http: HttpClient) {}
 
