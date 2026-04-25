@@ -3,21 +3,26 @@ const cors = require('cors');
 const helmet = require('helmet');
 require('dotenv').config();
 
-const authRoutes = require('./src/routes/auth');
-const productRoutes = require('./src/routes/products');
-const cartRoutes = require('./src/routes/cart');
-const orderRoutes = require('./src/routes/orders');
-const paymentRoutes = require('./src/routes/payment');
-const { apiLimiter } = require('./src/middleware/rateLimiter');
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Security Middleware
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-  contentSecurityPolicy: false
-}));
+// Health Check FIRST - before any middleware
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Server is running' });
+});
+
+// Root route
+app.get('/', (req, res) => {
+  res.json({ message: 'Eslam Store API', health: '/api/health' });
+});
+
+// Security Middleware - disable in serverless to prevent issues
+if (!process.env.VERCEL && !process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    contentSecurityPolicy: false
+  }));
+}
 
 // CORS Configuration
 const allowedOrigins = [
@@ -50,20 +55,24 @@ if (!process.env.VERCEL && !process.env.AWS_LAMBDA_FUNCTION_VERSION) {
   app.use('/uploads', express.static('uploads'));
 }
 
-// Rate Limiting
-app.use('/api/', apiLimiter);
+// Rate Limiting - disabled in serverless
+const { apiLimiter } = require('./src/middleware/rateLimiter');
+if (!process.env.VERCEL && !process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  app.use('/api/', apiLimiter);
+}
 
 // Routes
+const authRoutes = require('./src/routes/auth');
+const productRoutes = require('./src/routes/products');
+const cartRoutes = require('./src/routes/cart');
+const orderRoutes = require('./src/routes/orders');
+const paymentRoutes = require('./src/routes/payment');
+
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/payment', paymentRoutes);
-
-// Health Check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Server is running' });
-});
 
 // 404 Handler
 app.use((req, res) => {
