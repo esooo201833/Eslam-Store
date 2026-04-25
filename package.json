@@ -13,6 +13,7 @@
   "private": true,
   "packageManager": "npm@11.6.2",
   "dependencies": {
+    "@angular/cli": "^21.2.8",
     "@angular/common": "^21.2.0",
     "@angular/compiler": "^21.2.0",
     "@angular/core": "^21.2.0",
@@ -29,7 +30,6 @@
   },
   "devDependencies": {
     "@angular/build": "^21.2.8",
-    "@angular/cli": "^21.2.8",
     "@angular/compiler-cli": "^21.2.0",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
