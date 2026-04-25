@@ -1,11 +1,19 @@
 {
-  "buildCommand": "echo 'Build already completed locally'",
-  "outputDirectory": "dist/shopify-store/browser",
-  "framework": null,
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "dist/shopify-store/browser/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/dist/shopify-store/browser/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/shopify-store/browser/index.html"
     }
   ]
 }
