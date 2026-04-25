@@ -17,7 +17,10 @@ pool.on('connect', () => {
 
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
-  process.exit(-1);
+  // Don't exit in serverless environments
+  if (!process.env.VERCEL && !process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    process.exit(-1);
+  }
 });
 
 module.exports = pool;
