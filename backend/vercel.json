@@ -10,6 +10,14 @@
       "destination": "/api/health.js"
     },
     {
+      "source": "/favicon.ico",
+      "destination": "/api/favicon.js"
+    },
+    {
+      "source": "/favicon.png",
+      "destination": "/api/favicon.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/api/index.js"
     }
