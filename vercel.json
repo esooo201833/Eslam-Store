@@ -1,4 +1,5 @@
 {
+  "buildCommand": "echo 'Build already completed locally'",
   "outputDirectory": "dist/shopify-store/browser",
   "framework": null,
   "rewrites": [
