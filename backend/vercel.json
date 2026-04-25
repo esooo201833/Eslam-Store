@@ -18,6 +18,10 @@
       "destination": "/api/favicon.js"
     },
     {
+      "source": "/db-test",
+      "destination": "/api/db-test.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/api/index.js"
     }
