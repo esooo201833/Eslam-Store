@@ -1,7 +1,7 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npx ng build",
   "outputDirectory": "dist/shopify-store/browser",
   "devCommand": "npm start",
   "installCommand": "npm install",
-  "framework": "angular"
+  "framework": null
 }
