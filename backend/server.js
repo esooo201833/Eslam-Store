@@ -46,8 +46,10 @@ app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve Static Files (Uploads)
-app.use('/uploads', express.static('uploads'));
+// Serve Static Files (Uploads) - only for local development
+if (!process.env.VERCEL && !process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  app.use('/uploads', express.static('uploads'));
+}
 
 // Rate Limiting
 app.use('/api/', apiLimiter);
