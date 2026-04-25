@@ -1,9 +1,9 @@
-const pool = require('../database/db');
+const getPool = require('../database/db');
 const { validationResult } = require('express-validator');
 
 // Create Order
 const createOrder = async (req, res) => {
-  const client = await pool.connect();
+  const client = await getPool().connect();
   
   try {
     await client.query('BEGIN');
@@ -88,7 +88,7 @@ const createOrder = async (req, res) => {
 // Get User Orders
 const getUserOrders = async (req, res) => {
   try {
-    const result = await pool.query(
+    const result = await getPool().query(
       `SELECT o.*, 
         (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as items_count
        FROM orders o
@@ -109,7 +109,7 @@ const getOrderById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const orderResult = await pool.query(
+    const orderResult = await getPool().query(
       'SELECT * FROM orders WHERE id = $1 AND user_id = $2',
       [id, req.user.id]
     );
@@ -121,7 +121,7 @@ const getOrderById = async (req, res) => {
     const order = orderResult.rows[0];
 
     // Get order items
-    const itemsResult = await pool.query(
+    const itemsResult = await getPool().query(
       `SELECT oi.*, p.name, p.image_url
        FROM order_items oi
        JOIN products p ON oi.product_id = p.id
@@ -153,7 +153,7 @@ const getAllOrders = async (req, res) => {
 
     query += ' ORDER BY o.created_at DESC';
 
-    const result = await pool.query(query, params);
+    const result = await getPool().query(query, params);
     res.json({ orders: result.rows });
   } catch (error) {
     console.error('Get all orders error:', error);
@@ -172,7 +172,7 @@ const updateOrderStatus = async (req, res) => {
       return res.status(400).json({ message: 'Invalid status' });
     }
 
-    const result = await pool.query(
+    const result = await getPool().query(
       'UPDATE orders SET status = $1 WHERE id = $2 RETURNING *',
       [status, id]
     );

@@ -1,5 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const pool = require('../database/db');
+const getPool = require('../database/db');
 
 // Create Payment Intent
 const createPaymentIntent = async (req, res) => {
@@ -70,14 +70,14 @@ const handleWebhook = async (req, res) => {
       const paymentIntent = event.data.object;
       console.log('Payment succeeded:', paymentIntent.id);
       // Update order payment status in database
-      await pool.query(
+      await getPool().query(
         'UPDATE orders SET payment_status = $1 WHERE payment_id = $2',
         ['paid', paymentIntent.id]
       );
       break;
     case 'payment_intent.payment_failed':
       console.log('Payment failed:', event.data.object);
-      await pool.query(
+      await getPool().query(
         'UPDATE orders SET payment_status = $1 WHERE payment_id = $2',
         ['failed', event.data.object.id]
       );

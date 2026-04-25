@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const pool = require('../database/db');
+const getPool = require('../database/db');
 const { validationResult } = require('express-validator');
 const { generateOTP, calculateOTPExpiry, isOTPExpired } = require('../utils/otp');
 const { sendOTPEmail, sendWelcomeEmail } = require('../utils/email');
@@ -16,7 +16,7 @@ const register = async (req, res) => {
     const { email, password, full_name } = req.body;
 
     // Check if user already exists
-    const userExists = await pool.query(
+    const userExists = await getPool().query(
       'SELECT id, is_verified FROM users WHERE email = $1',
       [email]
     );
@@ -30,7 +30,7 @@ const register = async (req, res) => {
         const otp = generateOTP();
         const otpExpiry = calculateOTPExpiry(parseInt(process.env.OTP_EXPIRY_MINUTES) || 5);
 
-        await pool.query(
+        await getPool().query(
           'UPDATE users SET otp = $1, otp_expiry = $2 WHERE email = $3',
           [otp, otpExpiry, email]
         );
@@ -54,7 +54,7 @@ const register = async (req, res) => {
     const otpExpiry = calculateOTPExpiry(parseInt(process.env.OTP_EXPIRY_MINUTES) || 5);
 
     // Create user with OTP (not verified yet)
-    const result = await pool.query(
+    const result = await getPool().query(
       'INSERT INTO users (email, password, full_name, otp, otp_expiry, is_verified) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, email, full_name',
       [email, hashedPassword, full_name, otp, otpExpiry, false]
     );
@@ -86,7 +86,7 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     // Check if user exists
-    const result = await pool.query(
+    const result = await getPool().query(
       'SELECT * FROM users WHERE email = $1',
       [email]
     );
@@ -112,7 +112,7 @@ const login = async (req, res) => {
         const otp = generateOTP();
         const otpExpiry = calculateOTPExpiry(parseInt(process.env.OTP_EXPIRY_MINUTES) || 5);
 
-        await pool.query(
+        await getPool().query(
           'UPDATE users SET otp = $1, otp_expiry = $2 WHERE email = $3',
           [otp, otpExpiry, email]
         );
@@ -153,7 +153,7 @@ const login = async (req, res) => {
 // Get User Profile
 const getProfile = async (req, res) => {
   try {
-    const result = await pool.query(
+    const result = await getPool().query(
       'SELECT id, email, full_name, role, is_verified, created_at FROM users WHERE id = $1',
       [req.user.id]
     );
@@ -180,7 +180,7 @@ const verifyOTP = async (req, res) => {
     const { email, otp } = req.body;
 
     // Check if user exists
-    const result = await pool.query(
+    const result = await getPool().query(
       'SELECT * FROM users WHERE email = $1',
       [email]
     );
@@ -212,7 +212,7 @@ const verifyOTP = async (req, res) => {
     }
 
     // Verify user and clear OTP
-    await pool.query(
+    await getPool().query(
       'UPDATE users SET is_verified = true, otp = NULL, otp_expiry = NULL WHERE email = $1',
       [email]
     );
@@ -254,7 +254,7 @@ const resendOTP = async (req, res) => {
     const { email } = req.body;
 
     // Check if user exists
-    const result = await pool.query(
+    const result = await getPool().query(
       'SELECT * FROM users WHERE email = $1',
       [email]
     );
@@ -275,7 +275,7 @@ const resendOTP = async (req, res) => {
     const otpExpiry = calculateOTPExpiry(parseInt(process.env.OTP_EXPIRY_MINUTES) || 5);
 
     // Update OTP in database
-    await pool.query(
+    await getPool().query(
       'UPDATE users SET otp = $1, otp_expiry = $2 WHERE email = $3',
       [otp, otpExpiry, email]
     );

@@ -1,10 +1,10 @@
-const pool = require('../database/db');
+const getPool = require('../database/db');
 const { validationResult } = require('express-validator');
 
 // Get User Cart
 const getCart = async (req, res) => {
   try {
-    const result = await pool.query(
+    const result = await getPool().query(
       `SELECT c.id, c.quantity, p.id as product_id, p.name, p.description, p.price, p.image_url, p.stock, p.category
        FROM cart c
        JOIN products p ON c.product_id = p.id
@@ -33,7 +33,7 @@ const addToCart = async (req, res) => {
     const { product_id, quantity } = req.body;
 
     // Check if product exists and has enough stock
-    const productResult = await pool.query(
+    const productResult = await getPool().query(
       'SELECT stock FROM products WHERE id = $1',
       [product_id]
     );
@@ -49,7 +49,7 @@ const addToCart = async (req, res) => {
     }
 
     // Check if item already in cart
-    const existingItem = await pool.query(
+    const existingItem = await getPool().query(
       'SELECT * FROM cart WHERE user_id = $1 AND product_id = $2',
       [req.user.id, product_id]
     );
@@ -62,13 +62,13 @@ const addToCart = async (req, res) => {
         return res.status(400).json({ message: 'Not enough stock' });
       }
 
-      await pool.query(
+      await getPool().query(
         'UPDATE cart SET quantity = $1 WHERE user_id = $2 AND product_id = $3',
         [newQuantity, req.user.id, product_id]
       );
     } else {
       // Add new item
-      await pool.query(
+      await getPool().query(
         'INSERT INTO cart (user_id, product_id, quantity) VALUES ($1, $2, $3)',
         [req.user.id, product_id, quantity]
       );
@@ -91,7 +91,7 @@ const updateCartQuantity = async (req, res) => {
     }
 
     // Check product stock
-    const productResult = await pool.query(
+    const productResult = await getPool().query(
       'SELECT stock FROM products WHERE id = $1',
       [product_id]
     );
@@ -107,7 +107,7 @@ const updateCartQuantity = async (req, res) => {
     }
 
     // Update cart
-    const result = await pool.query(
+    const result = await getPool().query(
       'UPDATE cart SET quantity = $1 WHERE user_id = $2 AND product_id = $3 RETURNING *',
       [quantity, req.user.id, product_id]
     );
@@ -128,7 +128,7 @@ const removeFromCart = async (req, res) => {
   try {
     const { product_id } = req.params;
 
-    const result = await pool.query(
+    const result = await getPool().query(
       'DELETE FROM cart WHERE user_id = $1 AND product_id = $2 RETURNING *',
       [req.user.id, product_id]
     );
@@ -147,7 +147,7 @@ const removeFromCart = async (req, res) => {
 // Clear Cart
 const clearCart = async (req, res) => {
   try {
-    await pool.query('DELETE FROM cart WHERE user_id = $1', [req.user.id]);
+    await getPool().query('DELETE FROM cart WHERE user_id = $1', [req.user.id]);
     res.json({ message: 'Cart cleared successfully' });
   } catch (error) {
     console.error('Clear cart error:', error);

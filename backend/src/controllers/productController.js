@@ -1,4 +1,4 @@
-const pool = require('../database/db');
+const getPool = require('../database/db');
 const { validationResult } = require('express-validator');
 
 // Get All Products
@@ -32,7 +32,7 @@ const getAllProducts = async (req, res) => {
       query += ' ORDER BY created_at DESC';
     }
 
-    const result = await pool.query(query, params);
+    const result = await getPool().query(query, params);
     res.json({ products: result.rows });
   } catch (error) {
     console.error('Get all products error:', error);
@@ -44,7 +44,7 @@ const getAllProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
+    const result = await getPool().query('SELECT * FROM products WHERE id = $1', [id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Product not found' });
@@ -68,7 +68,7 @@ const createProduct = async (req, res) => {
     const { name, description, price, stock, category } = req.body;
     const image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
-    const result = await pool.query(
+    const result = await getPool().query(
       'INSERT INTO products (name, description, price, stock, category, image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
       [name, description, price, stock, category, image_url]
     );
@@ -92,7 +92,7 @@ const updateProduct = async (req, res) => {
     const { name, description, price, stock, category } = req.body;
     const image_url = req.file ? `/uploads/${req.file.filename}` : req.body.image_url;
 
-    const result = await pool.query(
+    const result = await getPool().query(
       'UPDATE products SET name = $1, description = $2, price = $3, stock = $4, category = $5, image_url = COALESCE($6, image_url) WHERE id = $7 RETURNING *',
       [name, description, price, stock, category, image_url, id]
     );
@@ -112,7 +112,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query('DELETE FROM products WHERE id = $1 RETURNING *', [id]);
+    const result = await getPool().query('DELETE FROM products WHERE id = $1 RETURNING *', [id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Product not found' });
