@@ -1,35 +1,9 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/index.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/health",
-      "dest": "/api/health.js"
-    },
-    {
-      "src": "/api/health",
-      "dest": "/api/health.js"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/api/favicon.js"
-    },
-    {
-      "src": "/favicon.png",
-      "dest": "/api/favicon.js"
-    },
-    {
-      "src": "/db-test",
-      "dest": "/api/db-test.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
+      "source": "/(.*)",
+      "destination": "/api/index.js"
     }
   ]
 }

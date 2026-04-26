@@ -21,35 +21,6 @@ app.get('/', (req, res) => {
   res.json({ message: 'Eslam Store API', health: '/health' });
 });
 
-// DB Test route
-const getPool = require('./src/database/db');
-app.get('/db-test', async (req, res) => {
-  try {
-    const result = await getPool().query('SELECT NOW()');
-    res.json({ 
-      status: 'OK', 
-      message: 'Database connected', 
-      time: result.rows[0].now,
-      env: {
-        hasDatabaseUrl: !!process.env.DATABASE_URL,
-        nodeEnv: process.env.NODE_ENV,
-        isVercel: !!process.env.VERCEL
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      status: 'ERROR', 
-      message: error.message,
-      stack: error.stack,
-      env: {
-        hasDatabaseUrl: !!process.env.DATABASE_URL,
-        nodeEnv: process.env.NODE_ENV,
-        isVercel: !!process.env.VERCEL
-      }
-    });
-  }
-});
-
 // Favicon - return 204 to prevent timeout
 app.get('/favicon.ico', (req, res) => {
   res.status(204).end();
