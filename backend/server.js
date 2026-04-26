@@ -21,6 +21,16 @@ app.get('/', (req, res) => {
   res.json({ message: 'Eslam Store API', health: '/health' });
 });
 
+// Debug endpoint to check DATABASE_URL
+app.get('/debug-env', (req, res) => {
+  const dbUrl = process.env.DATABASE_URL;
+  res.json({ 
+    hasDatabaseUrl: !!dbUrl,
+    databaseUrlPrefix: dbUrl ? dbUrl.substring(0, 20) + '...' : 'none',
+    host: dbUrl ? dbUrl.match(/@([^:]+)/)?.[1] : 'none'
+  });
+});
+
 // Favicon - return 204 to prevent timeout
 app.get('/favicon.ico', (req, res) => {
   res.status(204).end();
