@@ -1,9 +1,12 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// Use DATABASE_URL from Render/Supabase or fallback to individual env vars
-const connectionString = process.env.DATABASE_URL || 
-  `postgresql://${process.env.DB_USER || 'postgres'}:${process.env.DB_PASSWORD}@${process.env.DB_HOST || 'localhost'}:${process.env.DB_PORT || 5432}/${process.env.DB_NAME || 'eslam_store'}`;
+// Use DATABASE_URL only - no fallback to individual env vars
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
 
 let pool = null;
 
