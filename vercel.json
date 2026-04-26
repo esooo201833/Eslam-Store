@@ -1,31 +1,8 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "dist/shopify-store/browser/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/backend/api/index.js"
-    },
-    {
-      "src": "/health",
-      "dest": "/backend/api/health.js"
-    },
-    {
-      "src": "/db-test",
-      "dest": "/backend/api/db-test.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/shopify-store/browser/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/shopify-store/browser/index.html"
+      "source": "/(.*)",
+      "destination": "/dist/shopify-store/browser/index.html"
     }
   ]
 }
